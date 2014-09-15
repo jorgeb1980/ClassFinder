@@ -293,7 +293,7 @@ public class SearchPanel extends JPanel {
 				}
 				long comienzo = new Date().getTime();
 
-				List<Map<String, List<String>>> ret = ClassSearcher
+				List<Map<String, List<String>>> ret = ResourceSearcher
 						.getClassSearcher().searchClasses(directorios,
 								patrón.trim());
 
