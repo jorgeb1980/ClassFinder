@@ -44,7 +44,7 @@ public class ResultTableModel extends AbstractTableModel {
 	public ResultTableModel(SearchResult searchResult) {
 		this();
 		if (searchResult != null) {
-			for (Iterator<DirectoryResult> it = searchResult.getDirectories().iterator(); it.hasNext();) {
+			for (Iterator<DirectoryResult> it = searchResult.getResultDirectories().iterator(); it.hasNext();) {
 			/*for (Iterator<Map<String, List<String>>> it = searchResult
 					.iterator(); it.hasNext();) {*/
 				//Map<String, List<String>> table = it.next();
