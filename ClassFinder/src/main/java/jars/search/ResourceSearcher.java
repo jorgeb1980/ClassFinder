@@ -75,10 +75,10 @@ public class ResourceSearcher {
 	 * limit the results of the search, even if there are any more directories
 	 * in the caché
 	 * @param pattern File name pattern
-	 * @return List of maps, indexed by file name and containing resource names
-	 * that answer to the pattern.  For example:<br/>
+	 * @return Search result, with the search pattern used and a list 
+	 * of results, grouped by file and indexed by directory.  For example:<br/>
 	 * pattern -> "util"<br/>
-	 * returns -> [ [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/yet/another/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
+	 * returns -> [ "/full/path/to" -> [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
 	 */
 	public SearchResult search(
 			List<String> directories, String pattern) {

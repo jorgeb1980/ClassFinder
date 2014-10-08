@@ -286,7 +286,7 @@ public class SearchPanel extends JPanel {
 	/** 
 	 * Listener to the search button press.  Will launch the resource searcher
 	 * with the intended pattern and directories list. 
-	 * @param evt
+	 * @param evt Button push event
 	 */
 	void buttonSearch(ActionEvent evt) {
 		String pattern = this.searchPatternText.getText();
@@ -311,6 +311,11 @@ public class SearchPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Listener to the delete directory button.  Will erase a directory from
+	 * the directories list.
+	 * @param evt Button push event
+	 */
 	void buttonDeleteDirectory(ActionEvent evt) {
 		int index = this.directoriesList.getSelectedIndex();
 		if (index >= 0) {
@@ -319,6 +324,11 @@ public class SearchPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Listener to the add directory button.  Will add a directory to the 
+	 * directories list
+	 * @param evt Button push event
+	 */
 	void buttonAddDirectory(ActionEvent evt) {
 		int result = this.filesDialog.showOpenDialog(this);
 		switch (result) {
