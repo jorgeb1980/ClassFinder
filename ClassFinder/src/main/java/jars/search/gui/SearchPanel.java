@@ -1,11 +1,13 @@
-package jars.search;
+package jars.search.gui;
+
+import jars.search.ResourceSearcher;
+import jars.search.SearchResult;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -281,23 +283,28 @@ public class SearchPanel extends JPanel {
 								.addContainerGap()));
 	}
 
+	/** 
+	 * Listener to the search button press.  Will launch the resource searcher
+	 * with the intended pattern and directories list. 
+	 * @param evt
+	 */
 	void buttonSearch(ActionEvent evt) {
-		String patrón = this.searchPatternText.getText();
-		if ((patrón != null) && (patrón.trim().length() > 0)) {
-			ListModel<String> modelo = this.directoriesList.getModel();
-			int tamListaEntrada = modelo.getSize();
-			if (tamListaEntrada > 0) {
-				List<String> directorios = new LinkedList<String>();
-				for (int i = 0; i < tamListaEntrada; i++) {
-					directorios.add((String) modelo.getElementAt(i));
+		String pattern = this.searchPatternText.getText();
+		if ((pattern != null) && (pattern.trim().length() > 0)) {
+			ListModel<String> model = this.directoriesList.getModel();
+			int listSize = model.getSize();
+			if (listSize > 0) {
+				List<String> directories = new LinkedList<String>();
+				for (int i = 0; i < listSize; i++) {
+					directories.add((String) model.getElementAt(i));
 				}
-				long comienzo = new Date().getTime();
+				long start = new Date().getTime();
 
-				List<Map<String, List<String>>> ret = ResourceSearcher
-						.getClassSearcher().searchClasses(directorios,
-								patrón.trim());
+				SearchResult ret = ResourceSearcher
+						.getClassSearcher().search(directories,
+								pattern.trim());
 
-				long total = new Date().getTime() - comienzo;
+				long total = new Date().getTime() - start;
 				this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
 				this.resultsTable.setModel(new ResultTableModel(ret));
 			}
