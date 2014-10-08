@@ -17,7 +17,7 @@
         <configuration>
           <archive>
             <manifestEntries>
-              <Main-Class>jars.search.Main</Main-Class>
+              <Main-Class>jars.search.gui.Main</Main-Class>
             </manifestEntries>
           </archive>
         </configuration>

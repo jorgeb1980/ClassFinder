@@ -1,4 +1,4 @@
-package jars.search;
+package jars.search.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

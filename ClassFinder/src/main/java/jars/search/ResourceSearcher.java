@@ -39,8 +39,23 @@ public class ResourceSearcher {
 	
 	// Private constructor - we need it to be a singleton
 	private ResourceSearcher() {
-		this.cache = new HashMap<String, Map<String, List<String>>>();
+		resetCache();
 		this.resourceFilter = new ResourceFilter();
+	}
+
+	/** 
+	 * This method cleans the results caché.
+	 */
+	public void resetCache() {
+		this.cache = new HashMap<String, Map<String, List<String>>>();
+	}
+	
+	/**
+	 * This method resets the cache entry for a given directory
+	 * @param directory Name of the directory
+	 */
+	public void resetCache(String directory) {
+		this.cache.remove(directory);
 	}
 
 	/**
@@ -51,19 +66,21 @@ public class ResourceSearcher {
 			theSearcher = new ResourceSearcher();
 		}
 		return theSearcher;
-	}
+	}	
 
 	/** 
 	 * This method performs a cached search in the selected directories for the
-	 * file name pattern passed as a parameter
-	 * @param directories List of directories to search into
+	 * file name pattern passed as a parameter.
+	 * @param directories List of directories to search into.  This list will
+	 * limit the results of the search, even if there are any more directories
+	 * in the caché
 	 * @param pattern File name pattern
-	 * @return List of maps, indexed by file name and containing resource names
-	 * that answer to the pattern.  For example:<br/>
+	 * @return Search result, with the search pattern used and a list 
+	 * of results, grouped by file and indexed by directory.  For example:<br/>
 	 * pattern -> "util"<br/>
-	 * returns -> [ [ "someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
+	 * returns -> [ "/full/path/to" -> [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
 	 */
-	public List<Map<String, List<String>>> searchClasses(
+	public SearchResult search(
 			List<String> directories, String pattern) {
 		addDirectoriesToCache(directories);
 		return searchInCache(directories, pattern.toUpperCase());
@@ -88,29 +105,28 @@ public class ResourceSearcher {
 	 * @return List of maps, indexed by file name and containing resource names
 	 * that answer to the pattern.  For example:<br/>
 	 * pattern -> "util"<br/>
-	 * returns -> [ [ "someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
+	 * returns -> [ [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/yet/another/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
 	 */
-	private Map<String, List<String>> searchInDirectoryCache(
+	private DirectoryResult searchInDirectoryCache(
 			String directory, String pattern) {
-		Map<String, List<String>> ret = new HashMap<String, List<String>>();
 		Map<String, List<String>> jarFiles;
+		DirectoryResult ret = new DirectoryResult(directory);
 		if (this.cache.containsKey(directory)) {
 			jarFiles = this.cache.get(directory);
 			for (Iterator<String> it = jarFiles.keySet().iterator(); it
 					.hasNext();) {
 				String jarFile = (String) it.next();
-
+				FileResult currentFile = null;
 				List<String> classFiles = jarFiles.get(jarFile);
 				for (String classFile : classFiles) {
 					if (classFile.toUpperCase().contains(pattern)) {
-						List<String> theList = ret.get(jarFile);
-						if (theList == null) {
-							theList = new LinkedList<String>();
-							ret.put(jarFile, theList);
+						if (currentFile == null) {
+							currentFile = new FileResult(jarFile);
 						}
-						theList.add(classFile);
+						currentFile.addResource(classFile);
 					}
 				}
+				ret.addFile(currentFile);
 			}
 		}
 		return ret;
@@ -130,9 +146,14 @@ public class ResourceSearcher {
 			if ((dirFile.exists()) && (dirFile.isDirectory())) {
 				File[] files = dirFile.listFiles(this.resourceFilter);
 				for (File fichero : files) {
-					String filePath = fichero.getPath();
-					List<String> list = getResources(fichero);
-					ret.put(filePath, list);
+					try {
+						String filePath = fichero.getCanonicalPath();
+						List<String> list = getResources(fichero);
+						ret.put(filePath, list);
+					}
+					catch (IOException ioe) {
+						ioe.printStackTrace();
+					}
 				}
 			}
 		}
@@ -148,15 +169,13 @@ public class ResourceSearcher {
 	 * pattern -> "util"<br/>
 	 * returns -> [ [ "someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
 	 */
-	private List<Map<String, List<String>>> searchInCache(
+	private SearchResult searchInCache(
 			List<String> directories, String pattern) {
-		List<Map<String, List<String>>> ret = new LinkedList<Map<String, List<String>>>();
+		SearchResult ret = new SearchResult(pattern);
 		for (String directory : directories) {
-			Map<String, List<String>> table = searchInDirectoryCache(
+			DirectoryResult dirResult = searchInDirectoryCache(
 					directory, pattern);
-			if ((table != null) && (table.size() > 0)) {
-				ret.add(table);
-			}
+			ret.addDirectory(dirResult);
 		}
 		return ret;
 	}

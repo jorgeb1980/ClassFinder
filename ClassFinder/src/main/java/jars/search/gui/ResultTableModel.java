@@ -1,9 +1,12 @@
-package jars.search;
+package jars.search.gui;
+
+import jars.search.DirectoryResult;
+import jars.search.FileResult;
+import jars.search.SearchResult;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
@@ -34,22 +37,29 @@ public class ResultTableModel extends AbstractTableModel {
 		this.model = new ArrayList<String[]>();
 	}
 
-	
-	public ResultTableModel(
-			List<Map<String, List<String>>> searchResult) {
+	/**
+	 * Table Model constructor 
+	 * @param searchResult SearchResult object with the contents of the search
+	 */
+	public ResultTableModel(SearchResult searchResult) {
 		this();
 		if (searchResult != null) {
-			for (Iterator<Map<String, List<String>>> it = searchResult
-					.iterator(); it.hasNext();) {
-				Map<String, List<String>> table = it.next();
-				for (Iterator<String> itKey = table.keySet().iterator(); itKey
-						.hasNext();) {
-					String jarFile = (String) itKey.next();
+			for (Iterator<DirectoryResult> it = searchResult.getDirectories().iterator(); it.hasNext();) {
+			/*for (Iterator<Map<String, List<String>>> it = searchResult
+					.iterator(); it.hasNext();) {*/
+				//Map<String, List<String>> table = it.next();
+				DirectoryResult dir = it.next();
+//				for (Iterator<String> itKey = table.keySet().iterator(); itKey
+//						.hasNext();) {
+				for (Iterator<FileResult> itFile = dir.getFiles().iterator(); itFile.hasNext();) {
+					//String jarFile = (String) itKey.next();
+					FileResult file = itFile.next();
 					boolean first = true;
-					for (String clazz : table.get(jarFile)) {
+					//for (String clazz : table.get(jarFile)) {
+					for (String clazz: file.getResources()) {
 						String fileColumn = "";
 						if (first) {
-							fileColumn = jarFile;
+							fileColumn = file.getPath();
 							first = false;
 						}
 						this.model.add(new String[] { fileColumn, clazz });
