@@ -4,16 +4,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-public class Main {
-	
+public class ClassFinderMain {
 	public static void main(String[] args) {
-		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
 		JFrame principal = new JFrame("Class Finder App");
 
 		JPanel panel = new SearchPanel();

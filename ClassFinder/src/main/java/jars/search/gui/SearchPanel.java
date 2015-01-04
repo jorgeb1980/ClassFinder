@@ -1,7 +1,7 @@
 package jars.search.gui;
 
-import jars.search.ResourceSearcher;
-import jars.search.SearchResult;
+import jars.search.core.ResourceSearcher;
+import jars.search.core.SearchResult;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -77,9 +77,9 @@ public class SearchPanel extends JPanel {
 		this.searchPatternText = new JTextField();
 		this.jLabel6 = new JLabel();
 
-		this.jLabel1.setText("Last query execution time:");
+		this.jLabel1.setText(Resources.RESOURCES.getLabel("query.execution.time"));
 
-		this.jLabel2.setText("Directories list");
+		this.jLabel2.setText(Resources.RESOURCES.getLabel("directories.list"));
 
 		this.directoriesList.setModel(new ChainListModel(this));
 
@@ -89,9 +89,9 @@ public class SearchPanel extends JPanel {
 		this.jButton1.setPreferredSize(new Dimension(23, 23));
 		this.jButton1.addActionListener(new DirectoryListener(this));
 
-		this.jLabel3.setText("Add directory");
+		this.jLabel3.setText(Resources.RESOURCES.getLabel("add.directory"));
 
-		this.jLabel4.setText("Query results");
+		this.jLabel4.setText(Resources.RESOURCES.getLabel("query.results"));
 
 		this.resultsTable.setModel(new DefaultTableModel(new Object[][] {
 				{ null, null, null, null }, { null, null, null, null },
@@ -100,22 +100,23 @@ public class SearchPanel extends JPanel {
 
 		this.jScrollPane2.setViewportView(this.resultsTable);
 
-		this.jButton2.setText("Search");
+		this.jButton2.setText(Resources.RESOURCES.getLabel("search"));
 		this.jButton2.addActionListener(new SearchListener(this));
 
 		this.jButton3.setText("X");
 		this.jButton3.setPreferredSize(new Dimension(25, 23));
 		this.jButton3.addActionListener(new DeleteListener(this));
 
-		this.jLabel5.setText("Remove directory");
+		this.jLabel5.setText(Resources.RESOURCES.getLabel("remove.directory"));
 
 		this.searchPatternText.setPreferredSize(new Dimension(260, 20));
 
-		this.jLabel6.setText("Search pattern:");
+		this.jLabel6.setText(Resources.RESOURCES.getLabel("search.pattern"));
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
-		// Código autogenerado por netbeans para el layout de la página...
+		// Self-generated code (by NetBeans in the hazes of time) to set the 
+		//	window layout
 		// buffff
 		layout.setHorizontalGroup(layout
 				.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -340,4 +341,5 @@ public class SearchPanel extends JPanel {
 			break;
 		}
 	}
+
 }

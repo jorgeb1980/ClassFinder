@@ -1,4 +1,4 @@
-package jars.search;
+package jars.search.core;
 
 import java.io.File;
 import java.io.FileFilter;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package jars.search;
+package jars.search.core;
 
 import java.util.LinkedList;
 import java.util.List;
