@@ -46,17 +46,10 @@ public class ResultTableModel extends AbstractTableModel {
 		this();
 		if (searchResult != null) {
 			for (Iterator<DirectoryResult> it = searchResult.getResultDirectories().iterator(); it.hasNext();) {
-			/*for (Iterator<Map<String, List<String>>> it = searchResult
-					.iterator(); it.hasNext();) {*/
-				//Map<String, List<String>> table = it.next();
 				DirectoryResult dir = it.next();
-//				for (Iterator<String> itKey = table.keySet().iterator(); itKey
-//						.hasNext();) {
 				for (Iterator<FileResult> itFile = dir.getFiles().iterator(); itFile.hasNext();) {
-					//String jarFile = (String) itKey.next();
 					FileResult file = itFile.next();
 					boolean first = true;
-					//for (String clazz : table.get(jarFile)) {
 					for (String clazz: file.getResources()) {
 						String fileColumn = "";
 						if (first) {
