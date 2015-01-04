@@ -1,4 +1,4 @@
-package jars.search;
+package jars.search.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,9 +57,9 @@ public class ResultTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		String ret = "";
 		if (column == 0) {
-			ret = "File";
+			ret = Resources.RESOURCES.getLabel("file");
 		} else if (column == 1) {
-			ret = "Resource";
+			ret = Resources.RESOURCES.getLabel("resource");
 		}
 		return ret;
 	}

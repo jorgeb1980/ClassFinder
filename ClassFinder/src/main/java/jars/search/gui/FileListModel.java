@@ -1,4 +1,4 @@
-package jars.search;
+package jars.search.gui;
 
 import java.util.ArrayList;
 import java.util.Collections;

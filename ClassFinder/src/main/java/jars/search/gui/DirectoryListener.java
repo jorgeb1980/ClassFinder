@@ -1,16 +1,17 @@
-package jars.search;
+package jars.search.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-final class DeleteListener implements ActionListener {
+final class DirectoryListener implements ActionListener {
+
 	private SearchPanel panel;
 
-	public DeleteListener(SearchPanel searchPanel) {
+	public DirectoryListener(SearchPanel searchPanel) {
 		panel = searchPanel;
 	}
 
 	public void actionPerformed(ActionEvent evt) {
-		panel.buttonDeleteDirectory(evt);
+		panel.buttonAddDirectory(evt);
 	}
 }

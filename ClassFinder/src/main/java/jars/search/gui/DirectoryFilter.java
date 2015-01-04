@@ -1,6 +1,7 @@
-package jars.search;
+package jars.search.gui;
 
 import java.io.File;
+
 import javax.swing.filechooser.FileFilter;
 
 public class DirectoryFilter extends FileFilter {
