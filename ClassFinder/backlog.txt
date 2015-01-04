@@ -1,6 +1,7 @@
 - JTree presentation of results
 - Immersion checkbox - immersion limit?
 - Regular expressions in search patterns
+- Internationalization
 - Found resource information - original size, compressed size, compression % - tooltip? popup?
 - Found resource previsualization?  Maybe for text files (properties, txt, etc.)?
 - Connected to a java decompiler?
