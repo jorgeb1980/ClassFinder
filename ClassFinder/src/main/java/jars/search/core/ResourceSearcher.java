@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Implements class and resources searching logic.  
@@ -79,9 +82,10 @@ public class ResourceSearcher {
 	 * of results, grouped by file and indexed by directory.  For example:<br/>
 	 * pattern -> "util"<br/>
 	 * returns -> [ "/full/path/to" -> [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
+	 * @throws PatternException If the pattern is not valid
 	 */
 	public SearchResult search(
-			List<String> directories, String pattern) {
+			List<String> directories, String pattern) throws PatternException {
 		addDirectoriesToCache(directories);
 		return searchInCache(directories, pattern.toUpperCase());
 	}
@@ -106,11 +110,19 @@ public class ResourceSearcher {
 	 * that answer to the pattern.  For example:<br/>
 	 * pattern -> "util"<br/>
 	 * returns -> [ [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/yet/another/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
+	 * @throws PatternException If the pattern is not valid
 	 */
 	private DirectoryResult searchInDirectoryCache(
-			String directory, String pattern) {
+			String directory, String pattern) throws PatternException {
 		Map<String, List<String>> jarFiles;
 		DirectoryResult ret = new DirectoryResult(directory);
+		Pattern regEx = null;
+		try {
+			regEx = Pattern.compile(pattern);
+		}
+		catch(PatternSyntaxException pse) {
+			throw new PatternException(pattern + " is not a valid regular expression");
+		}	
 		if (this.cache.containsKey(directory)) {
 			jarFiles = this.cache.get(directory);
 			for (Iterator<String> it = jarFiles.keySet().iterator(); it
@@ -119,7 +131,8 @@ public class ResourceSearcher {
 				FileResult currentFile = null;
 				List<String> classFiles = jarFiles.get(jarFile);
 				for (String classFile : classFiles) {
-					if (classFile.toUpperCase().contains(pattern)) {
+					Matcher matcher = regEx.matcher(classFile.toUpperCase());
+					if (matcher.find(0)) {
 						if (currentFile == null) {
 							currentFile = new FileResult(jarFile);
 						}
@@ -168,9 +181,10 @@ public class ResourceSearcher {
 	 * that answer to the pattern.  For example:<br/>
 	 * pattern -> "util"<br/>
 	 * returns -> [ [ "someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
+	 * @throws PatternException If the pattern is not valid
 	 */
 	private SearchResult searchInCache(
-			List<String> directories, String pattern) {
+			List<String> directories, String pattern) throws PatternException {
 		SearchResult ret = new SearchResult(pattern);
 		for (String directory : directories) {
 			DirectoryResult dirResult = searchInDirectoryCache(

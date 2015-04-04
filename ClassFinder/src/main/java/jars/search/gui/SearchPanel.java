@@ -1,5 +1,6 @@
 package jars.search.gui;
 
+import jars.search.core.PatternException;
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
 
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -23,6 +25,8 @@ import javax.swing.LayoutStyle;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class SearchPanel extends JPanel {
 	/**
@@ -75,6 +79,15 @@ public class SearchPanel extends JPanel {
 		this.jButton3 = new JButton();
 		this.jLabel5 = new JLabel();
 		this.searchPatternText = new JTextField();
+		searchPatternText.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				// Capture enter key
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					SearchPanel.this.buttonSearch(null);
+				}
+			}
+		});
 		this.jLabel6 = new JLabel();
 
 		this.jLabel1.setText(Resources.RESOURCES.getLabel("query.execution.time"));
@@ -301,13 +314,17 @@ public class SearchPanel extends JPanel {
 				}
 				long start = new Date().getTime();
 
-				SearchResult ret = ResourceSearcher
-						.getClassSearcher().search(directories,
-								pattern.trim());
-
-				long total = new Date().getTime() - start;
-				this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
-				this.resultsTable.setModel(new ResultTableModel(ret));
+				try {
+					SearchResult ret = ResourceSearcher
+							.getClassSearcher().search(directories,
+									pattern.trim());
+					long total = new Date().getTime() - start;
+					this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
+					this.resultsTable.setModel(new ResultTableModel(ret));
+				}
+				catch(PatternException pe) {
+					JOptionPane.showMessageDialog(SearchPanel.this, pe.getMessage());
+				}
 			}
 		}
 	}
