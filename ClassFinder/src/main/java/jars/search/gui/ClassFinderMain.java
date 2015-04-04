@@ -11,7 +11,7 @@ public class ClassFinderMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		JFrame principal = new JFrame("Class Finder App");
+		JFrame principal = new JFrame(Resources.RESOURCES.getLabel("app.header"));
 
 		JPanel panel = new SearchPanel();
 		principal.setContentPane(panel);
