@@ -1,4 +1,4 @@
-package jars.search.gui;
+package jars.search.gui.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,7 +9,7 @@ import javax.swing.AbstractListModel;
 /**
  * This class implements a model for the directories list.
  */
-public class FileListModel extends AbstractListModel<String> {
+public class FileListModel extends AbstractListModel {
 	
 	//----------------------------------------------
 	// Class constants

@@ -1,8 +1,11 @@
 package jars.search.core;
 
+import jars.search.gui.I18n;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,7 +21,9 @@ import java.util.regex.PatternSyntaxException;
 /**
  * Implements class and resources searching logic.  
  */
-public class ResourceSearcher {
+public enum ResourceSearcher {
+	
+	SEARCHER;
 	
 	//----------------------------------------------------------
 	// Class constants
@@ -31,9 +36,7 @@ public class ResourceSearcher {
 	// Class properties
 	
 	/** Resources cache. */
-	private Map<String, Map<String, List<String>>> cache = null;
-	/** Singleton instance of the resource searcher. */
-	private static ResourceSearcher theSearcher = null;
+	private Map<String, Map<String, List<Resource>>> cache = null;
 	/** File filter configured to recognize only the supported file types. */
 	private FileFilter resourceFilter = null;
 
@@ -50,7 +53,7 @@ public class ResourceSearcher {
 	 * This method cleans the results caché.
 	 */
 	public void resetCache() {
-		this.cache = new HashMap<String, Map<String, List<String>>>();
+		this.cache = new HashMap<String, Map<String, List<Resource>>>();
 	}
 	
 	/**
@@ -60,16 +63,6 @@ public class ResourceSearcher {
 	public void resetCache(String directory) {
 		this.cache.remove(directory);
 	}
-
-	/**
-	 * @return Singleton instance of the searcher
-	 */
-	public static ResourceSearcher getClassSearcher() {
-		if (theSearcher == null) {
-			theSearcher = new ResourceSearcher();
-		}
-		return theSearcher;
-	}	
 
 	/** 
 	 * This method performs a cached search in the selected directories for the
@@ -87,7 +80,7 @@ public class ResourceSearcher {
 	public SearchResult search(
 			List<String> directories, String pattern) throws PatternException {
 		addDirectoriesToCache(directories);
-		return searchInCache(directories, pattern.toUpperCase());
+		return searchInCache(directories, pattern);
 	}
 
 	/**
@@ -114,14 +107,15 @@ public class ResourceSearcher {
 	 */
 	private DirectoryResult searchInDirectoryCache(
 			String directory, String pattern) throws PatternException {
-		Map<String, List<String>> jarFiles;
+		Map<String, List<Resource>> jarFiles;
 		DirectoryResult ret = new DirectoryResult(directory);
 		Pattern regEx = null;
 		try {
-			regEx = Pattern.compile(pattern);
+			regEx = Pattern.compile(pattern.toUpperCase());
 		}
 		catch(PatternSyntaxException pse) {
-			throw new PatternException(pattern + " is not a valid regular expression");
+			throw new PatternException(
+				MessageFormat.format(I18n.RESOURCES.getLabel("pattern.error"), pattern));
 		}	
 		if (this.cache.containsKey(directory)) {
 			jarFiles = this.cache.get(directory);
@@ -129,14 +123,14 @@ public class ResourceSearcher {
 					.hasNext();) {
 				String jarFile = (String) it.next();
 				FileResult currentFile = null;
-				List<String> classFiles = jarFiles.get(jarFile);
-				for (String classFile : classFiles) {
-					Matcher matcher = regEx.matcher(classFile.toUpperCase());
+				List<Resource> resources = jarFiles.get(jarFile);
+				for (Resource resource : resources) {
+					Matcher matcher = regEx.matcher(resource.getName().toUpperCase());
 					if (matcher.find(0)) {
 						if (currentFile == null) {
 							currentFile = new FileResult(jarFile);
 						}
-						currentFile.addResource(classFile);
+						currentFile.addResource(resource.getName());
 					}
 				}
 				ret.addFile(currentFile);
@@ -152,8 +146,8 @@ public class ResourceSearcher {
 	 * @return Map indexed by file name containing lists of resorce names contained in 
 	 * each file
 	 */
-	private Map<String, List<String>> readFromDirectory(String directory) {
-		Map<String, List<String>> ret = new HashMap<String, List<String>>();
+	private Map<String, List<Resource>> readFromDirectory(String directory) {
+		Map<String, List<Resource>> ret = new HashMap<String, List<Resource>>();
 		if (directory != null) {
 			File dirFile = new File(directory);
 			if ((dirFile.exists()) && (dirFile.isDirectory())) {
@@ -161,7 +155,7 @@ public class ResourceSearcher {
 				for (File fichero : files) {
 					try {
 						String filePath = fichero.getCanonicalPath();
-						List<String> list = getResources(fichero);
+						List<Resource> list = getResources(fichero);
 						ret.put(filePath, list);
 					}
 					catch (IOException ioe) {
@@ -199,15 +193,16 @@ public class ResourceSearcher {
 	 * @param file File to be read
 	 * @return List of resources inside the file 
 	 */
-	private List<String> getResources(File file) {
-		List<String> ret = new LinkedList<String>();
+	private List<Resource> getResources(File file) {
+		List<Resource> ret = new LinkedList<Resource>();
 		try {
 			JarFile jf = new JarFile(file);
 			Enumeration<JarEntry> entries = jf.entries();
 			while (entries.hasMoreElements()) {
 				JarEntry entry = (JarEntry) entries.nextElement();
 				if (!entry.isDirectory()) {
-					ret.add(entry.getName());
+					Resource r = new Resource(entry.getName(), entry.getSize(), entry.getCompressedSize());
+					ret.add(r);
 				}
 			}
 			jf.close();

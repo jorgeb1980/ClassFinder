@@ -3,9 +3,13 @@ package jars.search.gui;
 import jars.search.core.PatternException;
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
+import jars.search.gui.models.FileListModel;
+import jars.search.gui.models.ResultTableModel;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,8 +29,6 @@ import javax.swing.LayoutStyle;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 public class SearchPanel extends JPanel {
 	/**
@@ -48,7 +50,7 @@ public class SearchPanel extends JPanel {
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
 	private JSeparator jSeparator1;
-	private JList<String> directoriesList;
+	private JList directoriesList;
 	private JTable resultsTable;
 	private JTextField searchPatternText;
 
@@ -68,7 +70,7 @@ public class SearchPanel extends JPanel {
 		this.lastQueryTimeLabel = new JLabel();
 		this.jLabel2 = new JLabel();
 		this.jScrollPane1 = new JScrollPane();
-		this.directoriesList = new JList<String>();
+		this.directoriesList = new JList();
 		this.jButton1 = new JButton();
 		this.jLabel3 = new JLabel();
 		this.jSeparator1 = new JSeparator();
@@ -90,11 +92,9 @@ public class SearchPanel extends JPanel {
 		});
 		this.jLabel6 = new JLabel();
 
-		this.jLabel1.setText(Resources.RESOURCES.getLabel("query.execution.time"));
+		this.jLabel1.setText(I18n.RESOURCES.getLabel("query.execution.time"));
 
-		this.jLabel2.setText(Resources.RESOURCES.getLabel("directories.list"));
-
-		this.directoriesList.setModel(new ChainListModel(this));
+		this.jLabel2.setText(I18n.RESOURCES.getLabel("directories.list"));
 
 		this.jScrollPane1.setViewportView(this.directoriesList);
 
@@ -102,9 +102,9 @@ public class SearchPanel extends JPanel {
 		this.jButton1.setPreferredSize(new Dimension(23, 23));
 		this.jButton1.addActionListener(new DirectoryListener(this));
 
-		this.jLabel3.setText(Resources.RESOURCES.getLabel("add.directory"));
+		this.jLabel3.setText(I18n.RESOURCES.getLabel("add.directory"));
 
-		this.jLabel4.setText(Resources.RESOURCES.getLabel("query.results"));
+		this.jLabel4.setText(I18n.RESOURCES.getLabel("query.results"));
 
 		this.resultsTable.setModel(new DefaultTableModel(new Object[][] {
 				{ null, null, null, null }, { null, null, null, null },
@@ -113,18 +113,18 @@ public class SearchPanel extends JPanel {
 
 		this.jScrollPane2.setViewportView(this.resultsTable);
 
-		this.jButton2.setText(Resources.RESOURCES.getLabel("search"));
+		this.jButton2.setText(I18n.RESOURCES.getLabel("search"));
 		this.jButton2.addActionListener(new SearchListener(this));
 
 		this.jButton3.setText("X");
 		this.jButton3.setPreferredSize(new Dimension(25, 23));
 		this.jButton3.addActionListener(new DeleteListener(this));
 
-		this.jLabel5.setText(Resources.RESOURCES.getLabel("remove.directory"));
+		this.jLabel5.setText(I18n.RESOURCES.getLabel("remove.directory"));
 
 		this.searchPatternText.setPreferredSize(new Dimension(260, 20));
 
-		this.jLabel6.setText(Resources.RESOURCES.getLabel("search.pattern"));
+		this.jLabel6.setText(I18n.RESOURCES.getLabel("search.pattern"));
 
 		GroupLayout layout = new GroupLayout(this);
 		setLayout(layout);
@@ -305,7 +305,7 @@ public class SearchPanel extends JPanel {
 	void buttonSearch(ActionEvent evt) {
 		String pattern = this.searchPatternText.getText();
 		if ((pattern != null) && (pattern.trim().length() > 0)) {
-			ListModel<String> model = this.directoriesList.getModel();
+			ListModel model = this.directoriesList.getModel();
 			int listSize = model.getSize();
 			if (listSize > 0) {
 				List<String> directories = new LinkedList<String>();
@@ -316,7 +316,7 @@ public class SearchPanel extends JPanel {
 
 				try {
 					SearchResult ret = ResourceSearcher
-							.getClassSearcher().search(directories,
+							.SEARCHER.search(directories,
 									pattern.trim());
 					long total = new Date().getTime() - start;
 					this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
