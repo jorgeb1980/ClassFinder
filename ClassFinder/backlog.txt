@@ -2,6 +2,6 @@
 - Immersion checkbox - immersion limit?
 - Regular expressions in search patterns	- OK
 - Internationalization						- OK
-- Found resource information - original size, compressed size, compression % - tooltip? popup?
+- Found resource information - original size, compressed size, compression % - tooltip? popup? - OK
 - Found resource previsualization?  Maybe for text files (properties, txt, etc.)?
 - Connected to a java decompiler?
