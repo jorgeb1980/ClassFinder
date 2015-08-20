@@ -50,7 +50,7 @@ public class SearchPanel extends JPanel {
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
 	private JSeparator jSeparator1;
-	private JList<String> directoriesList;
+	private JList directoriesList;
 	private JTable resultsTable;
 	private JTextField searchPatternText;
 
@@ -70,7 +70,7 @@ public class SearchPanel extends JPanel {
 		this.lastQueryTimeLabel = new JLabel();
 		this.jLabel2 = new JLabel();
 		this.jScrollPane1 = new JScrollPane();
-		this.directoriesList = new JList<String>();
+		this.directoriesList = new JList();
 		this.jButton1 = new JButton();
 		this.jLabel3 = new JLabel();
 		this.jSeparator1 = new JSeparator();
@@ -305,7 +305,7 @@ public class SearchPanel extends JPanel {
 	void buttonSearch(ActionEvent evt) {
 		String pattern = this.searchPatternText.getText();
 		if ((pattern != null) && (pattern.trim().length() > 0)) {
-			ListModel<String> model = this.directoriesList.getModel();
+			ListModel model = this.directoriesList.getModel();
 			int listSize = model.getSize();
 			if (listSize > 0) {
 				List<String> directories = new LinkedList<String>();

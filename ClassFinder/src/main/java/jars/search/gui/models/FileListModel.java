@@ -9,7 +9,7 @@ import javax.swing.AbstractListModel;
 /**
  * This class implements a model for the directories list.
  */
-public class FileListModel extends AbstractListModel<String> {
+public class FileListModel extends AbstractListModel {
 	
 	//----------------------------------------------
 	// Class constants
