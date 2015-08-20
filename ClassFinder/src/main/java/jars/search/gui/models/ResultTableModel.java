@@ -3,9 +3,11 @@ package jars.search.gui.models;
 
 import jars.search.core.DirectoryResult;
 import jars.search.core.FileResult;
+import jars.search.core.Resource;
 import jars.search.core.SearchResult;
 import jars.search.gui.I18n;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,6 +27,15 @@ public class ResultTableModel extends AbstractTableModel {
 	 * Eclipse generated for serialization
 	 */
 	private static final long serialVersionUID = 1636480537993041534L;
+	// Pattern for resource presentation
+	// Parameters:
+	// Name
+	// Size
+	// Internationalized string for 'bytes'
+	// Compressed size
+	// Internationalized string for 'compressed'
+	private static final String HTML_RESOURCE_PATTERN = 
+		"<html><b>{0}</b> - {1} {2} ({3} {4})</html>";
 	
 	//----------------------------------------------------------
 	// Class properties
@@ -51,17 +62,33 @@ public class ResultTableModel extends AbstractTableModel {
 				for (Iterator<FileResult> itFile = dir.getFiles().iterator(); itFile.hasNext();) {
 					FileResult file = itFile.next();
 					boolean first = true;
-					for (String clazz: file.getResources()) {
+					for (Resource resource: file.getResources()) {
 						String fileColumn = "";
 						if (first) {
 							fileColumn = file.getPath();
 							first = false;
 						}
-						this.model.add(new String[] { fileColumn, clazz });
+						this.model.add(new String[] { fileColumn, presentHTML(resource) });
 					}
 				}
 			}
 		}
+	}
+	
+	// Makes a proper html presentation of the resource name, its size and its
+	//	compressed size
+	private String presentHTML(Resource resource) {
+		String ret = "";
+		if (resource != null) {
+			ret = MessageFormat.format(
+					HTML_RESOURCE_PATTERN, 
+					resource.getName(),					
+					resource.getSize(),
+					I18n.RESOURCES.getLabel("bytes"),
+					resource.getCompressedSize(),
+					I18n.RESOURCES.getLabel("compressed"));
+		}
+		return ret;
 	}
 
 	/**

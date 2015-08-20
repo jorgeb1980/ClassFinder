@@ -130,7 +130,11 @@ public enum ResourceSearcher {
 						if (currentFile == null) {
 							currentFile = new FileResult(jarFile);
 						}
-						currentFile.addResource(resource.getName());
+						currentFile.addResource(
+							new Resource(
+								resource.getName(), 
+								resource.getSize(), 
+								resource.getCompressedSize()));
 					}
 				}
 				ret.addFile(currentFile);
