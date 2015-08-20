@@ -5,7 +5,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public enum Resources {
+/**
+ * Internationalization bundle singleton, implemented as an Enumeration.
+ */
+public enum I18n {
 
 	RESOURCES;
 	
@@ -27,7 +30,7 @@ public enum Resources {
 	/**
 	 * Private constructor
 	 */
-	private Resources() {
+	private I18n() {
 		bundles = new Hashtable<Locale, ResourceBundle>();
 		bundles.put(Locale.getDefault(), ResourceBundle.getBundle(LABELS_NAME, Locale.getDefault()));
 	}

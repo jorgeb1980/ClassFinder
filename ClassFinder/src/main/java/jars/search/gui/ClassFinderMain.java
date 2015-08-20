@@ -11,7 +11,7 @@ public class ClassFinderMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		JFrame principal = new JFrame(Resources.RESOURCES.getLabel("app.header"));
+		JFrame principal = new JFrame(I18n.RESOURCES.getLabel("app.header"));
 
 		JPanel panel = new SearchPanel();
 		principal.setContentPane(panel);

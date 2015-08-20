@@ -1,9 +1,10 @@
-package jars.search.gui;
+package jars.search.gui.models;
 
 
 import jars.search.core.DirectoryResult;
 import jars.search.core.FileResult;
 import jars.search.core.SearchResult;
+import jars.search.gui.I18n;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -94,9 +95,9 @@ public class ResultTableModel extends AbstractTableModel {
 	public String getColumnName(int column) {
 		String ret = "";
 		if (column == 0) {
-			ret = Resources.RESOURCES.getLabel("file");
+			ret = I18n.RESOURCES.getLabel("file");
 		} else if (column == 1) {
-			ret = Resources.RESOURCES.getLabel("resource");
+			ret = I18n.RESOURCES.getLabel("resource");
 		}
 		return ret;
 	}

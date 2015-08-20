@@ -1,6 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import jars.search.gui.Resources;
+import jars.search.gui.I18n;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,30 +21,30 @@ public class TestLabels {
 
 	@Test
 	public void testDefault() {
-		assertEquals(Resources.RESOURCES.getLabel("query.execution.time"), 
-					 Resources.RESOURCES.getLabel(Locale.getDefault(), "query.execution.time"));		
+		assertEquals(I18n.RESOURCES.getLabel("query.execution.time"), 
+					 I18n.RESOURCES.getLabel(Locale.getDefault(), "query.execution.time"));		
 	}
 	
 	@Test
 	public void testEnglish() {
-		assertEquals(Resources.RESOURCES.getLabel(new Locale("en"), "query.execution.time"), "Last query execution time:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("en"), "query.execution.time"), "Last query execution time:");		
 	}
 	
 	@Test
 	public void testFrench() {
-		assertEquals(Resources.RESOURCES.getLabel(new Locale("fr"), "query.execution.time"), "Temps d'exécution de la dernière recherche:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("fr"), "query.execution.time"), "Temps d'exécution de la dernière recherche:");		
 	}
 
 	@Test
 	public void testSpanish() {
-		assertEquals(Resources.RESOURCES.getLabel(new Locale("es"), "query.execution.time"), "Tiempo de ejecución de la última consulta:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("es"), "query.execution.time"), "Tiempo de ejecución de la última consulta:");		
 	}
 	
 	@Test
 	public void testSameResources() {
 		try {
 			// Test that there is no difference between the resources in any language
-			String base = Resources.LABELS_NAME;
+			String base = I18n.LABELS_NAME;
 			// This makes the assumption that it will be ran from the sources (not from a jar)
 			ClassLoader cl = TestLabels.class.getClassLoader();
 			Enumeration<URL> resources = cl.getResources(base.substring(0, base.lastIndexOf('.')).replace('.', '/'));
