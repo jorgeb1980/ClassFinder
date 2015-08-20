@@ -1,4 +1,4 @@
-ClassFinder
+ClassFinder  [![Build Status](https://drone.io/github.com/jorgeb1980/ClassFinder/status.png)](https://drone.io/github.com/jorgeb1980/ClassFinder/latest)
 ===========
 
 ClassFinder - Java library and stand-alone Swing application that helps in finding individual resources in a predefined 
