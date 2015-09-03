@@ -109,7 +109,7 @@ public class ResultTableModel extends AbstractTableModel {
 	/**
 	 * Returns the data in the given coordinates
 	 * @param rowIndex Vertical coordinate (0 <= rowIndex < height)
-	 * @parma columnIndex Horizontal coordinate (0 <= columnIndex < width)
+	 * @param columnIndex Horizontal coordinate (0 <= columnIndex < width)
 	 */
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		return ((String[]) this.model.get(rowIndex))[columnIndex];
