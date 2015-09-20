@@ -6,7 +6,8 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Internationalization bundle singleton, implemented as an Enumeration.
+ * Internationalization bundle singleton.  Implemented as an enum as
+ * recommended in Effective Java 2nd. Edition.
  */
 public enum I18n {
 

@@ -19,6 +19,11 @@ public class Resource {
 	//-------------------------------------------------------------------
 	// Class methods
 	
+	@Override
+	public String toString() {
+		return name + " [" + size + "]";
+	};
+	
 	/**
 	 * @param name Resource name
 	 * @param size Resource size in bytes
