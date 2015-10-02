@@ -77,9 +77,10 @@ public enum ResourceSearcher {
 	 * pattern -> "util"<br/>
 	 * map of results (simplified) -> [ "/full/path/to/someJar.jar" :  [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ], [ "/full/path/to/my_library.jar" : [ "my/class/utilities/another_class.class" ], [ ... ] ]<br/>
 	 * @throws PatternException If the pattern is not valid
+	 * @throws IOException If any I/O error happens
 	 */
 	public SearchResult search(
-			File directory, String pattern) throws PatternException {
+			File directory, String pattern) throws PatternException, IOException {
 		List<File> dirs = new LinkedList<File>();
 		dirs.add(directory);
 		return search(dirs, pattern);
@@ -97,9 +98,10 @@ public enum ResourceSearcher {
 	 * pattern -> "util"<br/>
 	 * returns -> [ "/full/path/to" -> [ "/full/path/to/someJar.jar" -> [ "org/apache/commons/BeanUtils.class", "org/apache/commons/BeanUtilsBean.class", "org/apache/commons/BeanUtilsBean2.class", ... ] ], [ "/full/path/to/my_library.jar" -> [ "my/class/utilities/another_class.class" ]], [ ... ] ]<br/>
 	 * @throws PatternException If the pattern is not valid
+	 * @throws IOException If any I/O error happens
 	 */
 	public SearchResult search(
-			List<File> directories, String pattern) throws PatternException {
+			List<File> directories, String pattern) throws PatternException, IOException {
 		List<File> dirs = removeDuplicates(directories);
 		addDirectoriesToCache(dirs);
 		return searchInCache(dirs, pattern);
@@ -134,8 +136,10 @@ public enum ResourceSearcher {
 	/**
 	 * Adds a list of directories to the searcher caché
 	 * @param directories List of directories to search into
+	 * @throws IOException If any I/O error happens
 	 */
-	private void addDirectoriesToCache(List<File> directories) {
+	private void addDirectoriesToCache(List<File> directories) 
+			throws IOException {
 		for (File directory : directories) {
 			if (!this.cache.containsKey(canonicalPath(directory))) {
 				this.cache.put(directory, readFromDirectory(directory));
@@ -189,14 +193,16 @@ public enum ResourceSearcher {
 	 * @param directory Directory to read from
 	 * @return Map indexed by file name containing lists of resorce names contained in 
 	 * each file
+	 * @throws IOException If any I/O error happens
 	 */
-	private Map<File, List<Resource>> readFromDirectory(File directory) {
+	private Map<File, List<Resource>> readFromDirectory(File directory) 
+			throws IOException {
 		Map<File, List<Resource>> ret = new HashMap<File, List<Resource>>();
 		if (directory != null) {
 			if ((directory.exists()) && (directory.isDirectory())) {
 				File[] files = directory.listFiles(this.resourceFilter);
 				for (File file : files) {
-					ret.put(file, getResources(file));
+					ret.put(file.getCanonicalFile(), getResources(file));
 				}
 			}
 		}
@@ -241,11 +247,12 @@ public enum ResourceSearcher {
 	/**
 	 * Reads the resources available into a file (that must be a zip file)
 	 * @param file File to be read
-	 * @return List of resources inside the file 
+	 * @return List of resources inside the file
+	 * @throws IOException If any I/O error happens 
 	 */
-	private List<Resource> getResources(File file) {
+	private List<Resource> getResources(File file) throws IOException {
 		List<Resource> ret = new LinkedList<Resource>();
-		try {
+		if (file.exists() && file.length() > 0) {
 			JarFile jf = new JarFile(file);
 			Enumeration<JarEntry> entries = jf.entries();
 			while (entries.hasMoreElements()) {
@@ -259,9 +266,6 @@ public enum ResourceSearcher {
 				}
 			}
 			jf.close();
-		} catch (IOException ioe) {
-			System.err.println("---> Error processing " + file.getPath());
-			ioe.printStackTrace();
 		}
 		return ret;
 	}

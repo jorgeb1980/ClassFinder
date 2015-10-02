@@ -25,7 +25,6 @@ import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
-import jars.search.core.PatternException;
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
 import jars.search.gui.models.FileListModel;
@@ -323,7 +322,7 @@ public class SearchPanel extends JPanel {
 					this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
 					this.resultsTable.setModel(new ResultTableModel(ret));
 				}
-				catch(PatternException pe) {
+				catch(Exception pe) {
 					JOptionPane.showMessageDialog(SearchPanel.this, pe.getMessage());
 				}
 			}
