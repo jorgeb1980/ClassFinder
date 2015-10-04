@@ -19,7 +19,7 @@ import java.util.regex.PatternSyntaxException;
 import jars.search.gui.I18n;
 
 /**
- * Implements class and resources searching logic.  Implemented as an enum as
+ * Implements class and resources searching logic.  Singleton implemented as an enum as
  * recommended in Effective Java 2nd. Edition.
  */
 public enum ResourceSearcher {

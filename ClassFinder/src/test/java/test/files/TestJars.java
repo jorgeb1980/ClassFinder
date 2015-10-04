@@ -2,15 +2,49 @@ package test.files;
 
 import java.io.File;
 import java.nio.charset.Charset;
+import java.text.MessageFormat;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import jars.search.core.Resource;
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
 
 public class TestJars extends BaseFileTest {	
+	
+	private void printResults(File[] dirs, SearchResult results) {
+		printResults(Arrays.asList(dirs), results);
+	}
+	
+	private void printResults(List<File> dirs, SearchResult results) {
+		try {
+			System.out.println("=========================================================");
+			System.out.println(MessageFormat.format("Searching pattern {0} in ...", results.getPattern()));
+			for (File dir: dirs) {
+				System.out.println(dir.getCanonicalPath());
+			}
+			System.out.println("Results:");
+			for (File container: results.getResults().keySet()) {
+				System.out.println(container.getCanonicalPath());
+				for (Resource res: results.getResults().get(container)) {
+					System.out.println(
+						"\t"
+						+ res.getName() 
+						+ " - " 
+						+ res.getSize() 
+						+ " bytes (" 
+						+ res.getCompressedSize() 
+						+ " compressed)");
+				}
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	@Test
 	public void testOneResourceSingleDirectory() {
@@ -33,9 +67,11 @@ public class TestJars extends BaseFileTest {
 					"contents of the third file".getBytes(Charset.forName("utf-8")));
 			// 3 files named liked this inside the container
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(tempDir, "resource");
+			printResults(Arrays.asList(new File[]{tempDir}), result1);
 			Assert.assertEquals(3, result1.getResults().get(container).size());
 			// some different filter
 			SearchResult result2 = ResourceSearcher.SEARCHER.search(tempDir, "resource2");
+			printResults(Arrays.asList(new File[]{tempDir}), result2);
 			Assert.assertEquals(1, result2.getResults().get(container).size());
 			Assert.assertEquals("resource2.txt", result2.getResults().get(container).get(0).getName());
 		}
@@ -80,6 +116,7 @@ public class TestJars extends BaseFileTest {
 						getBytes(Charset.forName("utf-8")));
 			// Simple search
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(tempDir, "resource");
+			printResults(Arrays.asList(new File[]{tempDir}), result1);
 			// 3 files
 			Assert.assertEquals(3, result1.getResults().keySet().size());
 			// Number of resources in each file
@@ -150,6 +187,7 @@ public class TestJars extends BaseFileTest {
 			File[] files = new File[]{subDir1, subDir2, subDir3};
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(
 				Arrays.asList(files), "resource1");
+			printResults(files, result1);
 			Assert.assertEquals(2, result1.getResults().get(container11).size());
 			Assert.assertEquals(null, result1.getResults().get(container21));
 			Assert.assertEquals(null, result1.getResults().get(container22));
@@ -160,6 +198,7 @@ public class TestJars extends BaseFileTest {
 			Assert.assertEquals(null, result1.getResults().get(container35));
 			SearchResult result2 = ResourceSearcher.SEARCHER.search(
 					Arrays.asList(files), "resource2");
+			printResults(files, result2);
 			Assert.assertEquals(null, result2.getResults().get(container11));
 			Assert.assertEquals(1, result2.getResults().get(container21).size());
 			Assert.assertEquals(1, result2.getResults().get(container22).size());
@@ -170,6 +209,7 @@ public class TestJars extends BaseFileTest {
 			Assert.assertEquals(null, result2.getResults().get(container35));
 			SearchResult result3 = ResourceSearcher.SEARCHER.search(
 					Arrays.asList(files), "resource3");
+			printResults(files, result3);
 			Assert.assertEquals(null, result3.getResults().get(container11));
 			Assert.assertEquals(null, result3.getResults().get(container21));
 			Assert.assertEquals(null, result3.getResults().get(container22));
