@@ -1,15 +1,10 @@
 package jars.search.gui;
 
-import jars.search.core.PatternException;
-import jars.search.core.ResourceSearcher;
-import jars.search.core.SearchResult;
-import jars.search.gui.models.FileListModel;
-import jars.search.gui.models.ResultTableModel;
-
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,6 +24,11 @@ import javax.swing.LayoutStyle;
 import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
+
+import jars.search.core.ResourceSearcher;
+import jars.search.core.SearchResult;
+import jars.search.gui.models.FileListModel;
+import jars.search.gui.models.ResultTableModel;
 
 public class SearchPanel extends JPanel {
 	/**
@@ -308,9 +308,9 @@ public class SearchPanel extends JPanel {
 			ListModel model = this.directoriesList.getModel();
 			int listSize = model.getSize();
 			if (listSize > 0) {
-				List<String> directories = new LinkedList<String>();
+				List<File> directories = new LinkedList<File>();
 				for (int i = 0; i < listSize; i++) {
-					directories.add((String) model.getElementAt(i));
+					directories.add(new File((String) model.getElementAt(i)));
 				}
 				long start = new Date().getTime();
 
@@ -322,7 +322,7 @@ public class SearchPanel extends JPanel {
 					this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
 					this.resultsTable.setModel(new ResultTableModel(ret));
 				}
-				catch(PatternException pe) {
+				catch(Exception pe) {
 					JOptionPane.showMessageDialog(SearchPanel.this, pe.getMessage());
 				}
 			}

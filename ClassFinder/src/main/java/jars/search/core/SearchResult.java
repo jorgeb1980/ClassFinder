@@ -3,8 +3,7 @@
  */
 package jars.search.core;
 
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -17,37 +16,45 @@ public class SearchResult {
 	//------------------------------------------------------------
 	// Properties of the class
 	
+	/** Results indexed by File.  The index is the compressed file containing
+	 * the resources; the Resources are compressed into the File and follow
+	 * the requested pattern */
+	private Map<File, List<Resource>> results = null;
+	/** Search time in milliseconds */
+	private long millis;
 	/** Search pattern. */
 	private String pattern;
-	/** List of Directories that contain results for the search. */
-	private List<DirectoryResult> directories = null;
-	/** Will index a map of directories by directory name to search faster. */
-	private Map<String, DirectoryResult> index = null;
+	
 	
 	//------------------------------------------------------------
 	// Methods of the class
 	
+	/**
+	 * Static factory method used to instantiate a result.
+	 * @param pattern Search pattern
+	 * @param millis Search time in milliseconds
+	 * @param results List of results, indexed by File, containing the resources
+	 * found inside the File
+	 * @return
+	 */
+	static SearchResult createResult(String pattern, long millis, Map<File, List<Resource>> results) {
+		return new SearchResult(pattern, millis, results);
+	}
 	
 	/** 
-	 * Default visibility constructor (the class is only intended to be
+	 * Private visibility constructor (the class is only intended to be
 	 * instantiated from the ResourceSearcher) 
-	 * @param pattern Search pattern 
+	 * @param pattern Search pattern
+	 * @param millis Search time in milliseconds
+	 * @param results List of results, indexed by File, containing the resources
+	 * found inside the File
 	 */
-	SearchResult(String pattern) {
+	private SearchResult(String pattern, long millis, Map<File, List<Resource>> results) {
 		this.pattern = pattern;
-		directories = new LinkedList<DirectoryResult>();
-		index = new HashMap<String, DirectoryResult>();
-	}
+		this.millis = millis;
+		this.results = results;
+	}	
 
-	// Default visibility method in order to add directories to the search result
-	//	only from classes inside this package
-	void addDirectory(DirectoryResult directory) {
-		if (!index.containsKey(directory.getPath())) {
-			directories.add(directory);
-			index.put(directory.getPath(), directory);
-		}
-	}
-	
 	/**
 	 * @return Search pattern used
 	 */
@@ -56,33 +63,17 @@ public class SearchResult {
 	}
 
 	/**
-	 * @return Defensive copy of the directories list
+	 * @return Results of the search, indexed by File
 	 */
-	public List<DirectoryResult> getResultDirectories() {
-		return new LinkedList<DirectoryResult>(directories);
+	public Map<File, List<Resource>> getResults() {
+		return results;
 	}
-	
+
 	/**
-	 * Returns a directory result by its path
-	 * @param path Canonical path of the directory to look for inside the
-	 * searchs result
-	 * @return Directory result indexed by the path
+	 * @return Search time in milliseconds
 	 */
-	public DirectoryResult getDirectoryByPath(String path) {
-		return index.get(path);
-	}
+	public long getSearchTime() {
+		return millis;
+	}	
 	
-	/**
-	 * Shortcut to the full list of results, indexed by file.
-	 * @return List of all the FileResults in the search
-	 */
-	public List<FileResult> getResults() {
-		List<FileResult> ret = new LinkedList<FileResult>();
-		for (DirectoryResult dir: directories) {
-			for (FileResult file: dir.getFiles()) {
-				ret.add(file);
-			}
-		}
-		return ret;
-	}
 }

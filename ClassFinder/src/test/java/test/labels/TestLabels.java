@@ -1,3 +1,4 @@
+package test.labels;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import jars.search.gui.I18n;
@@ -16,7 +17,8 @@ import java.util.Properties;
 
 import org.junit.Test;
 
-
+// The point of this test is to make sure no multilanguage resource is behind the
+//	others in number of resources, and to identify fast whatever is left and where 
 public class TestLabels {
 
 	@Test
@@ -27,17 +29,20 @@ public class TestLabels {
 	
 	@Test
 	public void testEnglish() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("en"), "query.execution.time"), "Last query execution time:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("en"), 
+				"query.execution.time"), "Last query execution time:");		
 	}
 	
 	@Test
 	public void testFrench() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("fr"), "query.execution.time"), "Temps d'exécution de la dernière recherche:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("fr"), 
+				"query.execution.time"), "Temps d'exécution de la dernière recherche:");		
 	}
 
 	@Test
 	public void testSpanish() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("es"), "query.execution.time"), "Tiempo de ejecución de la última consulta:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("es"), 
+				"query.execution.time"), "Tiempo de ejecución de la última consulta:");		
 	}
 	
 	@Test
@@ -47,7 +52,8 @@ public class TestLabels {
 			String base = I18n.LABELS_NAME;
 			// This makes the assumption that it will be ran from the sources (not from a jar)
 			ClassLoader cl = TestLabels.class.getClassLoader();
-			Enumeration<URL> resources = cl.getResources(base.substring(0, base.lastIndexOf('.')).replace('.', '/'));
+			Enumeration<URL> resources = cl.getResources(
+					base.substring(0, base.lastIndexOf('.')).replace('.', '/'));
 			if (resources.hasMoreElements()) {
 				URL url = resources.nextElement();
 				File i18nDir = new File(url.toURI());

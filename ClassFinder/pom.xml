@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ClassFinder</groupId>
   <artifactId>ClassFinder</artifactId>
-  <version>2.2</version>
+  <version>3.0</version>
   <properties>
     <project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
   </properties>
@@ -14,6 +14,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>2.6</version>
         <configuration>
           <archive>
             <manifestEntries>
@@ -27,6 +28,7 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.9.1</version>
         <configuration>
+        	<!-- Adds some google analytics candy to the javadoc pages -->
         	<header>
     			<![CDATA[        	
         		<script>
@@ -52,6 +54,8 @@
           	<target>1.6</target>
           </configuration>
         </plugin>
+        <!-- Full generation and upload of docs:
+        javadoc:javadoc install com.github.github:site-maven-plugin:site  -->
          <plugin>
 		      <groupId>com.github.github</groupId>
 		      <artifactId>site-maven-plugin</artifactId>

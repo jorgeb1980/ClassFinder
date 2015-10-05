@@ -1,18 +1,21 @@
 package jars.search.gui.models;
 
 
-import jars.search.core.DirectoryResult;
-import jars.search.core.FileResult;
+import java.io.File;
+import java.io.IOException;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.table.AbstractTableModel;
+
 import jars.search.core.Resource;
 import jars.search.core.SearchResult;
 import jars.search.gui.I18n;
-
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.swing.table.AbstractTableModel;
 
 /**
  * This class implements a data model for the table presenting the search
@@ -57,19 +60,21 @@ public class ResultTableModel extends AbstractTableModel {
 	public ResultTableModel(SearchResult searchResult) {
 		this();
 		if (searchResult != null) {
-			for (Iterator<DirectoryResult> it = searchResult.getResultDirectories().iterator(); it.hasNext();) {
-				DirectoryResult dir = it.next();
-				for (Iterator<FileResult> itFile = dir.getFiles().iterator(); itFile.hasNext();) {
-					FileResult file = itFile.next();
-					boolean first = true;
-					for (Resource resource: file.getResources()) {
-						String fileColumn = "";
-						if (first) {
-							fileColumn = file.getPath();
-							first = false;
-						}
-						this.model.add(new String[] { fileColumn, presentHTML(resource) });
+			Map<File, List<Resource>> results = searchResult.getResults();
+			List<File> files = new LinkedList<File>(results.keySet());
+			Collections.sort(files, new FileComparator());
+			// Run through the File size ordered by canonical path
+			for (File file: files) {
+				// The first result of each file must show the file path in the
+				//	first column
+				boolean first = true;
+				for (Resource resource: results.get(file)) {
+					String fileColumn = "";
+					if (first) {
+						fileColumn = file.getPath();
+						first = false;
 					}
+					this.model.add(new String[] { fileColumn, presentHTML(resource) });
 				}
 			}
 		}
@@ -127,5 +132,25 @@ public class ResultTableModel extends AbstractTableModel {
 			ret = I18n.RESOURCES.getLabel("resource");
 		}
 		return ret;
+	}
+	
+	// File comparator
+	private class FileComparator implements Comparator<File> {
+		// File canonical path
+		private String canonicalPath(File file) {
+			String ret = null;
+			try {
+				ret = file.getCanonicalPath();
+			}
+			catch (IOException ioe) {
+				ret = "";
+			}
+			return ret;
+		}
+		
+		@Override
+		public int compare(File o1, File o2) {
+			return canonicalPath(o1).compareTo(canonicalPath(o2));
+		}
 	}
 }
