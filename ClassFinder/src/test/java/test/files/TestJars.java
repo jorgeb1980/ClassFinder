@@ -27,9 +27,9 @@ public class TestJars extends BaseFileTest {
 				System.out.println(dir.getCanonicalPath());
 			}
 			System.out.println("Results:");
-			for (File container: results.getResults().keySet()) {
+			for (File container: results.getResourcesByFile().keySet()) {
 				System.out.println(container.getCanonicalPath());
-				for (Resource res: results.getResults().get(container)) {
+				for (Resource res: results.getResourcesByFile().get(container)) {
 					System.out.println(
 						"\t"
 						+ res.getName() 
@@ -68,12 +68,12 @@ public class TestJars extends BaseFileTest {
 			// 3 files named liked this inside the container
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(tempDir, "resource");
 			printResults(Arrays.asList(new File[]{tempDir}), result1);
-			Assert.assertEquals(3, result1.getResults().get(container).size());
+			Assert.assertEquals(3, result1.getResourcesByFile().get(container).size());
 			// some different filter
 			SearchResult result2 = ResourceSearcher.SEARCHER.search(tempDir, "resource2");
 			printResults(Arrays.asList(new File[]{tempDir}), result2);
-			Assert.assertEquals(1, result2.getResults().get(container).size());
-			Assert.assertEquals("resource2.txt", result2.getResults().get(container).get(0).getName());
+			Assert.assertEquals(1, result2.getResourcesByFile().get(container).size());
+			Assert.assertEquals("resource2.txt", result2.getResourcesByFile().get(container).get(0).getName());
 		}
 		catch(Exception t) {
 			t.printStackTrace();
@@ -118,11 +118,11 @@ public class TestJars extends BaseFileTest {
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(tempDir, "resource");
 			printResults(Arrays.asList(new File[]{tempDir}), result1);
 			// 3 files
-			Assert.assertEquals(3, result1.getResults().keySet().size());
+			Assert.assertEquals(3, result1.getResourcesByFile().keySet().size());
 			// Number of resources in each file
-			Assert.assertEquals(1, result1.getResults().get(container1).size());
-			Assert.assertEquals(2, result1.getResults().get(container2).size());
-			Assert.assertEquals(1, result1.getResults().get(container3).size());			
+			Assert.assertEquals(1, result1.getResourcesByFile().get(container1).size());
+			Assert.assertEquals(2, result1.getResourcesByFile().get(container2).size());
+			Assert.assertEquals(1, result1.getResourcesByFile().get(container3).size());			
 		}
 		catch(Exception t) {
 			t.printStackTrace();
@@ -188,36 +188,36 @@ public class TestJars extends BaseFileTest {
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(
 				Arrays.asList(files), "resource1");
 			printResults(files, result1);
-			Assert.assertEquals(2, result1.getResults().get(container11).size());
-			Assert.assertEquals(null, result1.getResults().get(container21));
-			Assert.assertEquals(null, result1.getResults().get(container22));
-			Assert.assertEquals(null, result1.getResults().get(container31));
-			Assert.assertEquals(null, result1.getResults().get(container32));
-			Assert.assertEquals(null, result1.getResults().get(container33));
-			Assert.assertEquals(null, result1.getResults().get(container34));
-			Assert.assertEquals(null, result1.getResults().get(container35));
+			Assert.assertEquals(2, result1.getResourcesByFile().get(container11).size());
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container21));
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container22));
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container31));
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container32));
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container33));
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container34));
+			Assert.assertEquals(null, result1.getResourcesByFile().get(container35));
 			SearchResult result2 = ResourceSearcher.SEARCHER.search(
 					Arrays.asList(files), "resource2");
 			printResults(files, result2);
-			Assert.assertEquals(null, result2.getResults().get(container11));
-			Assert.assertEquals(1, result2.getResults().get(container21).size());
-			Assert.assertEquals(1, result2.getResults().get(container22).size());
-			Assert.assertEquals(null, result2.getResults().get(container31));
-			Assert.assertEquals(null, result2.getResults().get(container32));
-			Assert.assertEquals(null, result2.getResults().get(container33));
-			Assert.assertEquals(null, result2.getResults().get(container34));
-			Assert.assertEquals(null, result2.getResults().get(container35));
+			Assert.assertEquals(null, result2.getResourcesByFile().get(container11));
+			Assert.assertEquals(1, result2.getResourcesByFile().get(container21).size());
+			Assert.assertEquals(1, result2.getResourcesByFile().get(container22).size());
+			Assert.assertEquals(null, result2.getResourcesByFile().get(container31));
+			Assert.assertEquals(null, result2.getResourcesByFile().get(container32));
+			Assert.assertEquals(null, result2.getResourcesByFile().get(container33));
+			Assert.assertEquals(null, result2.getResourcesByFile().get(container34));
+			Assert.assertEquals(null, result2.getResourcesByFile().get(container35));
 			SearchResult result3 = ResourceSearcher.SEARCHER.search(
 					Arrays.asList(files), "resource3");
 			printResults(files, result3);
-			Assert.assertEquals(null, result3.getResults().get(container11));
-			Assert.assertEquals(null, result3.getResults().get(container21));
-			Assert.assertEquals(null, result3.getResults().get(container22));
-			Assert.assertEquals(2, result3.getResults().get(container31).size());
-			Assert.assertEquals(null, result3.getResults().get(container32));
-			Assert.assertEquals(null, result3.getResults().get(container33));
-			Assert.assertEquals(null, result3.getResults().get(container34));
-			Assert.assertEquals(null, result3.getResults().get(container35));
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container11));
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container21));
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container22));
+			Assert.assertEquals(2, result3.getResourcesByFile().get(container31).size());
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container32));
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container33));
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container34));
+			Assert.assertEquals(null, result3.getResourcesByFile().get(container35));
 		}
 		catch(Exception t) {
 			t.printStackTrace();

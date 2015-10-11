@@ -1,4 +1,4 @@
-package jars.search.gui.models;
+package jars.search.gui;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,9 +7,9 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 
 /**
- * This class implements a model for the directories list.
+ * Implements a model for the directories list.
  */
-public class FileListModel extends AbstractListModel {
+class FileListModel extends AbstractListModel {
 	
 	//----------------------------------------------
 	// Class constants
@@ -28,20 +28,33 @@ public class FileListModel extends AbstractListModel {
 	//----------------------------------------------
 	// Class methods
 	
+	/**
+	 * Builds a ListModel to populate the File list (this is used to define
+	 * the reach of the search)
+	 */
 	public FileListModel() {
 		this.model = new ArrayList<String>();
 	}
 
+	/**
+	 * Gets the element in the specified index of the list.
+	 * @param index 0 <= index < length of the list
+	 * @return Element at the specified index
+	 */
 	public String getElementAt(int index) {
 		return this.model.get(index);
 	}
 
+	/**
+	 * Returns the length of the list
+	 * @return Length of the list
+	 */
 	public int getSize() {
 		return this.model.size();
 	}
 
 	/**
-	 * This method adds an entry to the model	
+	 * Adds an entry to the model	
 	 * @param directory New directory to appear in the model
 	 */
 	public void addEntry(String directory) {
@@ -51,7 +64,7 @@ public class FileListModel extends AbstractListModel {
 	}
 
 	/**
-	 * This method removes an entry from the model
+	 * Removes an entry from the model
 	 * @param index Index of the entry (0 <= index < model length) 
 	 */
 	public void removeEntry(int index) {

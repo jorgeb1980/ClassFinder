@@ -1,4 +1,4 @@
-package jars.search.gui;
+package jars.search.core;
 
 import java.util.Hashtable;
 import java.util.Locale;
@@ -7,10 +7,12 @@ import java.util.ResourceBundle;
 
 /**
  * Internationalization bundle singleton.  Implemented as an enum as
- * recommended in Effective Java 2nd. Edition.
+ * recommended in Effective Java 2nd. Edition.  Intended for inner use of the 
+ * library only.
  */
 public enum I18n {
 
+	/** Internationalization bundle class singleton. */
 	RESOURCES;
 	
 	//-------------------------------------------------------
@@ -37,19 +39,19 @@ public enum I18n {
 	}
 	
 	/**
-	 * This method searchs for a label in the resources bundle
-	 * @param labelId Name of the resource
-	 * @return Value of the resource
+	 * Searchs for a label in the resources bundle.
+	 * @param labelId Name of the resource.
+	 * @return Value of the resource.
 	 */
 	public String getLabel(String labelId) {
 		return getLabel(Locale.getDefault(), labelId);
 	}
 	
 	/**
-	 * This method searchs for a label in a particular resource bundle.
-	 * @param locale Bundle that has been asked for
-	 * @param labelId Name of the resource
-	 * @return Value of the resource
+	 * Searchs for a label in a particular resource bundle.
+	 * @param locale Bundle that has been asked for.
+	 * @param labelId Name of the resource.
+	 * @return Value of the resource.
 	 */
 	public String getLabel(Locale locale, String labelId) {
 		if (!bundles.containsKey(locale)) {
