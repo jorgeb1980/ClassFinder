@@ -2,6 +2,7 @@ package jars.search.gui;
 
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
@@ -25,12 +26,11 @@ import javax.swing.ListModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
+import jars.search.core.I18n;
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
-import jars.search.gui.models.FileListModel;
-import jars.search.gui.models.ResultTableModel;
 
-public class SearchPanel extends JPanel {
+class SearchPanel extends JPanel {
 	/**
 	 * Eclipse generated for serialization
 	 */
@@ -359,4 +359,98 @@ public class SearchPanel extends JPanel {
 		}
 	}
 
+	/**
+	 * Implements an action listener for the Delete button
+	 */
+	final class DeleteListener implements ActionListener {
+		
+		//--------------------------------------------------
+		// Class properties 
+		
+		// Reference to the search panel
+		private SearchPanel panel;
+
+		//--------------------------------------------------
+		// Class methods 
+		
+		/**
+		 * Builds a listener bound to a certain search panel. 
+		 * @param searchPanel Panel to be bound to the listener.
+		 */
+		public DeleteListener(SearchPanel searchPanel) {
+			panel = searchPanel;
+		}
+
+		/**
+		 * Answers to a GUI event.  In this case, it deletes an entry of the
+		 * directories list.
+		 * @param evt Event to be answered.
+		 */
+		public void actionPerformed(ActionEvent evt) {
+			panel.buttonDeleteDirectory(evt);
+		}
+	}
+	
+	/**
+	 * Implements an action listener for the "Search" button.
+	 */
+	final class SearchListener implements ActionListener {
+		
+		//-------------------------------------------------------
+		// Class properties 
+		
+		// Reference to the search panel
+		private SearchPanel panel;
+
+		//-------------------------------------------------------
+		// Class properties 
+		
+		/**
+		 * Builds a listener bound to a certain search panel. 
+		 * @param searchPanel Panel to be bound to the listener.
+		 */
+		public SearchListener(SearchPanel searchPanel) {
+			panel = searchPanel;
+		}
+		
+		/** 
+		 * Answers to a GUI event.  In this case, it fires the search.
+		 * @param evt Event to be answered.
+		 */
+		public void actionPerformed(ActionEvent evt) {
+			panel.buttonSearch(evt);
+		}
+	}
+	
+	/**
+	 * Implements an action listener for the "Add directory" button
+	 */
+	final class DirectoryListener implements ActionListener {
+
+		//----------------------------------------------
+		// Class properties
+		
+		// Reference to the search panel
+		private SearchPanel panel;
+		
+		//----------------------------------------------
+		// Class methods
+		
+		/**
+		 * Builds a listener bound to a certain search panel. 
+		 * @param searchPanel Panel to be bound to the listener.
+		 */
+		public DirectoryListener(SearchPanel searchPanel) {
+			panel = searchPanel;
+		}
+
+		/** 
+		 * Answers to a GUI event.  In this case, it adds a directory to the
+		 * search directories list.
+		 * @param evt Event to be answered.
+		 */
+		public void actionPerformed(ActionEvent evt) {
+			panel.buttonAddDirectory(evt);
+		}
+	}
 }

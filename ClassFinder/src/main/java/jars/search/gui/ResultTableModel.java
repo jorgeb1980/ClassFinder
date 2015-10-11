@@ -1,4 +1,4 @@
-package jars.search.gui.models;
+package jars.search.gui;
 
 
 import java.io.File;
@@ -13,15 +13,15 @@ import java.util.Map;
 
 import javax.swing.table.AbstractTableModel;
 
+import jars.search.core.I18n;
 import jars.search.core.Resource;
 import jars.search.core.SearchResult;
-import jars.search.gui.I18n;
 
 /**
  * This class implements a data model for the table presenting the search
  * results.
  */
-public class ResultTableModel extends AbstractTableModel {
+class ResultTableModel extends AbstractTableModel {
 	
 	//----------------------------------------------------------
 	// Class constants
@@ -60,7 +60,7 @@ public class ResultTableModel extends AbstractTableModel {
 	public ResultTableModel(SearchResult searchResult) {
 		this();
 		if (searchResult != null) {
-			Map<File, List<Resource>> results = searchResult.getResults();
+			Map<File, List<Resource>> results = searchResult.getResourcesByFile();
 			List<File> files = new LinkedList<File>(results.keySet());
 			Collections.sort(files, new FileComparator());
 			// Run through the File size ordered by canonical path

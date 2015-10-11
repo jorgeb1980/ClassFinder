@@ -1,7 +1,6 @@
 package test.labels;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-import jars.search.gui.I18n;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +15,8 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.junit.Test;
+
+import jars.search.core.I18n;
 
 // The point of this test is to make sure no multilanguage resource is behind the
 //	others in number of resources, and to identify fast whatever is left and where 

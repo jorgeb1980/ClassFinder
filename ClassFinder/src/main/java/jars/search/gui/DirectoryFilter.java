@@ -5,9 +5,9 @@ import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
 /**
- * This class implements a graphic (swing) directory filter
+ * Implements a graphic (swing) directory filter
  */
-public class DirectoryFilter extends FileFilter {
+class DirectoryFilter extends FileFilter {
 	
 	//--------------------------------------------------
 	// Class methods 
@@ -17,7 +17,7 @@ public class DirectoryFilter extends FileFilter {
 	}
 
 	/**
-	 * This methods implements the filter: will accept whatever is a directory
+	 * Implements the filter: will accept whatever is a directory
 	 * @param f File to analyce
 	 * @return true if the file is a directory
 	 */
