@@ -64,8 +64,10 @@
 		        <message>Updating apidocs</message>
 		        <!-- Relative path where it will put the javadoc -->
 		        <path>mvn-site</path>
-		        <!-- I want it to merge to the existing content -->
-		        <merge>true</merge>
+		        <!-- It will replace the existing content.  Useful in order
+		        not to make a mess with HTML and deleted classes, but it will kill
+		        every html in gh-pages -->
+		        <merge>false</merge>
 		        <repositoryName>Classfinder</repositoryName>
 		        <repositoryOwner>jorgeb1980</repositoryOwner>	
 		        <!-- Links to the private information configured in a local maven settings file -->	        
