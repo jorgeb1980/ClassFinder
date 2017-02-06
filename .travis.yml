@@ -4,6 +4,7 @@ jdk:
 branches:
   only:
   - /^v.+/
+  - master
 deploy:
   skip_cleanup: true
   provider: releases
