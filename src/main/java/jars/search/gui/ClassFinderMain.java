@@ -24,7 +24,7 @@ public class ClassFinderMain {
 
 		JPanel panel = new SearchPanel();
 		principal.setContentPane(panel);
-		principal.setSize(panel.getPreferredSize());
+		principal.pack();
 		principal.setDefaultCloseOperation(3);
 
 		principal.setLocationRelativeTo(null);

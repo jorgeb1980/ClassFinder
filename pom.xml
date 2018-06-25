@@ -4,11 +4,20 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ClassFinder</groupId>
   <artifactId>ClassFinder</artifactId>
-  <version>3.0.0</version>
+  <version>3.1.0</version>
   <properties>
     <project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
+    <timestamp>${maven.build.timestamp}</timestamp>
+   	<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
+    <appversion>${project.version} - ${timestamp}</appversion>
   </properties>
   <build>
+  	<resources>
+		<resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
   	<finalName>ClassFinder</finalName>
     <plugins>
       <plugin>
