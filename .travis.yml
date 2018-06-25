@@ -3,13 +3,14 @@ jdk:
 - oraclejdk8
 branches:
   only:
-  - /^v.+/
+  - "/^v.+/"
   - master
 deploy:
   skip_cleanup: true
   provider: releases
-  api_key:
-    secure: E2T7qsHduAuc6YgCDLDqKXH5txc0UuWQybgVShp9o8gQ1zHH5Ple0S0wlqFOtiNgSrBXWkk4HdxHrvyS8Xjj4KXujhEhL3FYdPn8AZjIPb28UVInsatgjAmP9NzYJhlJNBIQhIy1MJdRduhzW1DDBh7b/gY5+bL4Lwgozii66heXiXOhE/YgYs5O9B/U17xG12xmEdurvXQ8qFCFah7aKU5AsFlzLf71YtTZxUxkSbKg6DuQc+CP9EsncoPoVWM3Q9hrPfRO7DCxxb8U5NTYAE8RaGF1WFGW3XEhF55Qih79y4B670Czo4KL2iEhH9qu5WGxe13ZSA4lUO0lOXUxt0DpqJ4+z90E2sdVaYZKZUrwe5cHrSzpUZ8cs931Ehc4EL9PSvqui/DPeW4TgLAaavZ5AmlgKVjRq0OfZI/bU/Z9neW1GTmlsq4fGhtw4WddVr1ZoSlOCS1FsDetFWk5AvpiFWd+o5alFGwk/nPydmbis4U9W4T96kbr6PJkK9mRWZKd2Bp2MLAn/bq+7HovmUBNOP8AN0D5+/KHJTloHY/L8T7BCp6ob5gCM4VavJAztnlcLprZ5LyE8Z4jTTy7pILW1GiwCiFk6JCxeFkMOto0vOgeZJwEFplJPT8cVoaHlnSfdrPerjXoaOIq+lHalBl99ML5l5ifl6MLferPttY=
+  api-key:
+    secure: uiBmG6mvYYx6PmLBVN84AizA4oeEetVqPZ4Q+Fd0J+Ol0jC7jWCLxw6S5TK8d8Yr+bZ+N02Rjn4A0xLm4nGuI1mjvshJuVbdrCy7f4VpsAzg1x3bYpYRgAd4CDlwVIlYlR0CWQ6d98BtdLKfSoNnkEtwAKIexdFfpEAZ2x/Sc5CnxoLmJZG+M6Kt+D9ZFd18CMy83NUzP1zyy3yW6tg0eqccLMATX79f1MDhHNB+jSSXY2LktpueIEUcjwCOIsD6Zea7VakYegJaC1yU756S2eLuJE7gRLJjZAaCLCk9nrMcsApv2nshii/L6yEqRCL++ee6U2C7/KvAgo7oiadVs9bW315EHJvRhtLuaDwuvBv/2oqzIUG13/OvDBCDdumZD6LTt9rfiWYuB29MArQfGlnKSE9kEvmJAxhmT4yioJjK63DLZ8nXsnpDIGzxZSoU1whewNr0LTWIeCT9/wxHhLW3Qj5b//QxTzFf0WKsyJumuRju0c2XJajpIcbg1VvFaYUPlgOWdj54q40+0qIZLIyCzjYGEtcgkcIY6HRF5DytiZcYIWJS09l3sow+1tYgkRO6ZiMAo5JeQ39xxzQTmhCvt3rDoyml4acyZih45T5cYVkkq7AN2EaJrTboeLjPxAYtgbP/8jx5LdluPvFpE5y7/kMlvHVNGm/ZCCh2rW0=
   file: target/ClassFinder.jar
   on:
     tags: true
+  
