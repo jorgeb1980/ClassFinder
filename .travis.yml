@@ -6,9 +6,10 @@ branches:
   - /^v.+/
   - master
 deploy:
+  skip_cleanup: true
   provider: releases
   api_key:
     secure: swkQ3KxdtxAlcA2oZjyKwld1rNFIs9M9dZPSXmUnXh/GKw1ixHNDQlk2iktJbkv2fejrrd3/Ji3gcTzn+pdkJDAjftbxFcCB1E/GX80MsgYdejB8Ok/mAatlRzwfyPKwWC7jFnqyq23WCfsZyqNQiLoN7x0mgLBeBR+aAPNHpKIlUesR6uPG7kQG37KM090d/KWtQ69yLPkLHsVavNAUfKCcN9G5UMz4//iUbkKWI5fxYwuT1wH3kIPkAjf3UTRQImdFD4aq3YAygIC6+RfNUg4xzlrHePTT4sR6HxC84M5zaPe222GZhNujNbibg038IAZmN84jVq1it8lNKI2X2U3VRFEAq4S1eJnbe+8fULj+3zl12YENVcoqvt8oFLxWd7TW+4BrsHaS0MX1Ib+iOcGMhthBUh7lXQ3KLgyGEEWkJkGfwLFh4yw1EOuUyKNw0WzkV1B/ObQ8UMV7K+zA87PbamP6u+3Mcir9+BaFgE9PAxKBZ+5ttv9vJBQ7DaehOhAOwbIi+fFQJeFgN7UW8fEe76VIlhJe2iipLqMlTO8NX+nhXcZh6oyVkofphCLFstc0AB31NAOBnEhYr01bCk6egD5XqXRmgnTasku6aBVB/nM59bzZfoG0xDhguwwQ64ChOoi80u5jta+xKx2vtNumy7Q6uxFCI8bEIx/mjZo=
   file: target/ClassFinder.jar
   on:
-    repo: jorgeb1980/ClassFinder
+    tags: true

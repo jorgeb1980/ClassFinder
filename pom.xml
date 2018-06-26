@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ClassFinder</groupId>
   <artifactId>ClassFinder</artifactId>
-  <version>3.9.0</version>
+  <version>3.11.0</version>
   <properties>
     <project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
     <timestamp>${maven.build.timestamp}</timestamp>
