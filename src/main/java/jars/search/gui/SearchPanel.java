@@ -27,8 +27,12 @@ import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 
 import jars.search.core.I18n;
+import jars.search.core.Properties;
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
 
 class SearchPanel extends JPanel {
 	/**
@@ -47,6 +51,7 @@ class SearchPanel extends JPanel {
 	private JLabel jLabel4;
 	private JLabel jLabel5;
 	private JLabel jLabel6;
+	private JLabel versionLabel;
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
 	private JSeparator jSeparator1;
@@ -125,176 +130,92 @@ class SearchPanel extends JPanel {
 		this.searchPatternText.setPreferredSize(new Dimension(260, 20));
 
 		this.jLabel6.setText(I18n.RESOURCES.getLabel("search.pattern"));
+		
+		versionLabel = new JLabel("");
+		versionLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		versionLabel.setText(Properties.INSTANCE.get("classfinder.version"));
 
 		GroupLayout layout = new GroupLayout(this);
+		layout.setHorizontalGroup(
+			layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jLabel2)
+							.addPreferredGap(ComponentPlacement.RELATED, 461, Short.MAX_VALUE)
+							.addComponent(jLabel3)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18))
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jLabel4)
+							.addContainerGap(581, Short.MAX_VALUE))
+						.addGroup(layout.createSequentialGroup()
+							.addGroup(layout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(jScrollPane2, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
+								.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, 745, Short.MAX_VALUE))
+							.addContainerGap())
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jLabel6)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(searchPatternText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addComponent(jButton2)
+							.addContainerGap())
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(jLabel5)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(jButton3, GroupLayout.PREFERRED_SIZE, 39, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())
+						.addGroup(layout.createSequentialGroup()
+							.addGap(376)
+							.addComponent(jLabel1)
+							.addGap(5)
+							.addComponent(lastQueryTimeLabel)
+							.addGap(75))
+						.addGroup(layout.createSequentialGroup()
+							.addComponent(versionLabel, GroupLayout.PREFERRED_SIZE, 180, GroupLayout.PREFERRED_SIZE)
+							.addContainerGap())))
+		);
+		layout.setVerticalGroup(
+			layout.createParallelGroup(Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jLabel2)
+						.addComponent(jLabel3)
+						.addComponent(jButton1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jButton3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jLabel5))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jSeparator1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jLabel4)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+					.addGap(18)
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jButton2)
+						.addComponent(searchPatternText, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jLabel6))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGroup(layout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(jLabel1)
+						.addComponent(lastQueryTimeLabel))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(versionLabel, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
+		);
 		setLayout(layout);
-		// Self-generated code (by NetBeans in the hazes of time) to set the 
-		//	window layout
-		// buffff
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(
-												GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createParallelGroup(
-																GroupLayout.Alignment.LEADING)
-																.addGroup(
-																		layout.createParallelGroup(
-																				GroupLayout.Alignment.LEADING)
-																				.addGroup(
-																						layout.createParallelGroup(
-																								GroupLayout.Alignment.LEADING)
-																								.addGroup(
-																										layout.createSequentialGroup()
-																												.addComponent(
-																														this.jScrollPane1,
-																														-1,
-																														473,
-																														32767)
-																												.addContainerGap())
-																								.addGroup(
-																										GroupLayout.Alignment.TRAILING,
-																										layout.createSequentialGroup()
-																												.addComponent(
-																														this.jLabel2)
-																												.addPreferredGap(
-																														LayoutStyle.ComponentPlacement.RELATED,
-																														269,
-																														32767)
-																												.addComponent(
-																														this.jLabel3)
-																												.addPreferredGap(
-																														LayoutStyle.ComponentPlacement.RELATED)
-																												.addComponent(
-																														this.jButton1,
-																														-2,
-																														-1,
-																														-2)
-																												.addGap(18,
-																														18,
-																														18))
-																								.addGroup(
-																										layout.createSequentialGroup()
-																												.addComponent(
-																														this.jLabel4)
-																												.addContainerGap(
-																														361,
-																														32767))
-																								.addGroup(
-																										GroupLayout.Alignment.TRAILING,
-																										layout.createSequentialGroup()
-																												.addGroup(
-																														layout.createParallelGroup(
-																																GroupLayout.Alignment.TRAILING)
-																																.addComponent(
-																																		this.jScrollPane2,
-																																		GroupLayout.Alignment.LEADING,
-																																		-1,
-																																		473,
-																																		32767)
-																																.addComponent(
-																																		this.jSeparator1,
-																																		-1,
-																																		473,
-																																		32767))
-																												.addContainerGap()))
-																				.addGroup(
-																						GroupLayout.Alignment.TRAILING,
-																						layout.createSequentialGroup()
-																								.addComponent(
-																										this.jLabel6)
-																								.addPreferredGap(
-																										LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										this.searchPatternText,
-																										-2,
-																										-1,
-																										-2)
-																								.addGap(18,
-																										18,
-																										18)
-																								.addComponent(
-																										this.jButton2)
-																								.addContainerGap()))
-																.addGroup(
-																		GroupLayout.Alignment.TRAILING,
-																		layout.createSequentialGroup()
-																				.addComponent(
-																						this.jLabel5)
-																				.addPreferredGap(
-																						LayoutStyle.ComponentPlacement.RELATED)
-																				.addComponent(
-																						this.jButton3,
-																						-2,
-																						39,
-																						-2)
-																				.addContainerGap()))
-												.addGroup(
-														GroupLayout.Alignment.TRAILING,
-														layout.createSequentialGroup()
-																.addComponent(
-																		this.jLabel1)
-																.addPreferredGap(
-																		LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(
-																		this.lastQueryTimeLabel)
-																.addGap(81, 81,
-																		81)))));
-
-		layout.setVerticalGroup(layout
-				.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addContainerGap()
-								.addGroup(
-										layout.createParallelGroup(
-												GroupLayout.Alignment.BASELINE)
-												.addComponent(this.jLabel2)
-												.addComponent(this.jLabel3)
-												.addComponent(this.jButton1,
-														-2, -1, -2))
-								.addPreferredGap(
-										LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(this.jScrollPane1, -2, 114, -2)
-								.addPreferredGap(
-										LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												GroupLayout.Alignment.BASELINE)
-												.addComponent(this.jButton3,
-														-2, -1, -2)
-												.addComponent(this.jLabel5))
-								.addPreferredGap(
-										LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(this.jSeparator1, -2, -1, -2)
-								.addPreferredGap(
-										LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(this.jLabel4)
-								.addPreferredGap(
-										LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(this.jScrollPane2, -1, 100, 32767)
-								.addGap(18, 18, 18)
-								.addGroup(
-										layout.createParallelGroup(
-												GroupLayout.Alignment.BASELINE)
-												.addComponent(this.jButton2)
-												.addComponent(
-														this.searchPatternText,
-														-2, -1, -2)
-												.addComponent(this.jLabel6))
-								.addPreferredGap(
-										LayoutStyle.ComponentPlacement.RELATED)
-								.addGroup(
-										layout.createParallelGroup(
-												GroupLayout.Alignment.BASELINE)
-												.addComponent(this.jLabel1)
-												.addComponent(
-														this.lastQueryTimeLabel))
-								.addContainerGap()));
 	}
 
 	/** 
