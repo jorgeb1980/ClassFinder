@@ -23,26 +23,43 @@ public class TestLabels {
 
 	@Test
 	public void testDefault() {
-		assertEquals(I18n.RESOURCES.getLabel("query.execution.time"), 
-					 I18n.RESOURCES.getLabel(Locale.getDefault(), "query.execution.time"));
+		assertEquals(
+			I18n.RESOURCES.getLabel("query.execution.time"), 
+			I18n.RESOURCES.getLabel(Locale.getDefault(), "query.execution.time")
+		);
 	}
 	
 	@Test
 	public void testEnglish() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("en"),
-				"query.execution.time"), "Last query execution time:");
+		assertEquals(
+			"Last query execution time:",
+			I18n.RESOURCES.getLabel(
+				Locale.forLanguageTag("en"),
+				"query.execution.time"
+			)
+		);
 	}
 	
 	@Test
 	public void testFrench() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("fr"), 
-				"query.execution.time"), "Temps d'exécution de la dernière recherche:");
+		assertEquals(
+			"Temps d'exécution de la dernière recherche:",
+			I18n.RESOURCES.getLabel(
+				Locale.forLanguageTag("fr"),
+				"query.execution.time"
+			)			
+		);
 	}
 
 	@Test
 	public void testSpanish() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("es"), 
-				"query.execution.time"), "Tiempo de ejecución de la última consulta:");
+		assertEquals(
+			"Tiempo de ejecución de la última consulta:",
+			I18n.RESOURCES.getLabel(
+				Locale.forLanguageTag("es"),
+				"query.execution.time"
+			)
+		);
 	}
 	
 	@Test
