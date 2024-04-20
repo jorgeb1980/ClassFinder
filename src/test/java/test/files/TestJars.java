@@ -1,9 +1,9 @@
 package test.files;
 
-import jars.search.core.ResourceSearcher;
-import jars.search.core.SearchResult;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static test.files.FileUtils.addToContainer;
+import static test.files.FileUtils.createContainer;
 
 import java.io.File;
 import java.nio.charset.Charset;
@@ -11,9 +11,11 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static test.files.FileUtils.addToContainer;
+import org.junit.Assert;
+import org.junit.Test;
+
+import jars.search.core.ResourceSearcher;
+import jars.search.core.SearchResult;
 
 public class TestJars extends BaseFileTest {	
 	
@@ -47,7 +49,7 @@ public class TestJars extends BaseFileTest {
 	@Test
 	public void testOneResourceSingleDirectory() {
 		try {
-			var container = FileUtils.createContainer(tempDir, "resource.jar");
+			var container = createContainer(tempDir, "resource.jar");
 			addToContainer(
 					container, 
 					"resource.txt", 
@@ -86,7 +88,7 @@ public class TestJars extends BaseFileTest {
 	public void testManyResourcesSingleDirectory() {
 		try {
 			// 1 resource in container 1
-			var container1 = FileUtils.createContainer(tempDir, "resource1.jar");
+			var container1 = createContainer(tempDir, "resource1.jar");
 			addToContainer(
 					container1, 
 					"resource1_1.txt", 
@@ -95,7 +97,7 @@ public class TestJars extends BaseFileTest {
 						getBytes(Charset.forName("utf-8"))
 			);
 			// 2 resources in container 2
-			var container2 = FileUtils.createContainer(tempDir, "resource2.jar");
+			var container2 = createContainer(tempDir, "resource2.jar");
 			addToContainer(
 					container2, 
 					"resource2_1.txt", 
@@ -111,7 +113,7 @@ public class TestJars extends BaseFileTest {
 						getBytes(Charset.forName("utf-8"))
 			);
 			// 1 resource in container 3
-			var container3 = FileUtils.createContainer(tempDir, "resource3.jar");
+			var container3 = createContainer(tempDir, "resource3.jar");
 			addToContainer(
 					container3, 
 					"resource3_1.txt", 
@@ -140,7 +142,7 @@ public class TestJars extends BaseFileTest {
 		try {
 			// dir 1: 1 container with 2 resources
 			var subDir1 = FileUtils.createSubDir(tempDir, "level1\\level1_1");
-			var container11 = FileUtils.createContainer(subDir1, "resource1_1.jar");
+			var container11 = createContainer(subDir1, "resource1_1.jar");
 			addToContainer(
 					container11, 
 					"resource11_1.txt", 
@@ -157,7 +159,7 @@ public class TestJars extends BaseFileTest {
 			);			
 			// dir 2: 2 containers with 1 resource each one
 			var subDir2 = FileUtils.createSubDir(tempDir, "level1/level1_2");
-			var container21 = FileUtils.createContainer(subDir2, "resource2_1.jar");
+			var container21 = createContainer(subDir2, "resource2_1.jar");
 			addToContainer(
 					container21, 
 					"resource21_1.txt", 
@@ -165,7 +167,7 @@ public class TestJars extends BaseFileTest {
 					"contents of the first file, first container, second directory".
 						getBytes(Charset.forName("utf-8"))
 			);
-			var container22 = FileUtils.createContainer(subDir2, "resource2_2.jar");
+			var container22 = createContainer(subDir2, "resource2_2.jar");
 			addToContainer(
 					container22,
 					"resource22_1.txt", 
@@ -175,7 +177,7 @@ public class TestJars extends BaseFileTest {
 			);
 			// dir 3: 5 containers, 1 with 2 resources, 4 empty
 			var subDir3 = FileUtils.createSubDir(tempDir, "level1/level1_3");
-			var container31 = FileUtils.createContainer(subDir3, "resource3_1.jar");
+			var container31 = createContainer(subDir3, "resource3_1.jar");
 			addToContainer(
 					container31, 
 					"resource31_1.txt", 
@@ -190,10 +192,10 @@ public class TestJars extends BaseFileTest {
 					"contents of the second file, first container, third directory".
 						getBytes(Charset.forName("utf-8"))
 			);
-			var container32 = FileUtils.createContainer(subDir3, "resource3_2.jar");
-			var container33 = FileUtils.createContainer(subDir3, "resource3_3.jar");
-			var container34 = FileUtils.createContainer(subDir3, "resource3_4.jar");
-			var container35 = FileUtils.createContainer(subDir3, "resource3_5.jar");
+			var container32 = createContainer(subDir3, "resource3_2.jar");
+			var container33 = createContainer(subDir3, "resource3_3.jar");
+			var container34 = createContainer(subDir3, "resource3_4.jar");
+			var container35 = createContainer(subDir3, "resource3_5.jar");
 			// Search certain files in the directories
 			File[] files = new File[]{subDir1, subDir2, subDir3};
 			SearchResult result1 = ResourceSearcher.SEARCHER.search(
