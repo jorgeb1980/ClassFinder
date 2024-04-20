@@ -26,24 +26,11 @@ public enum Properties {
 	
 	// Hidden constructor
 	private Properties() {
-		InputStream is = null;
-		try {
-			is = Properties.class.getClassLoader().
-					getResourceAsStream(PROPERTIES_FILE);
+		try(InputStream is = Properties.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE)) {
 			properties.load(is);;
 		}
 		catch (IOException ioe) {
 			ioe.printStackTrace();
-		}
-		finally {
-			if (is != null) {
-				try {
-					is.close();
-				}
-				catch(Exception e) {
-					e.printStackTrace();
-				}
-			}
 		}
 	}
 	

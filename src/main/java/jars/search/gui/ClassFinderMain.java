@@ -1,10 +1,8 @@
 package jars.search.gui;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.UIManager;
-
 import jars.search.core.I18n;
+
+import javax.swing.*;
 
 /**
  * Implements the main method and entry point for the GUI Swing application.
@@ -20,9 +18,9 @@ public class ClassFinderMain {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		JFrame principal = new JFrame(I18n.RESOURCES.getLabel("app.header"));
+		var principal = new JFrame(I18n.RESOURCES.getLabel("app.header"));
 
-		JPanel panel = new SearchPanel();
+		var panel = new SearchPanel();
 		principal.setContentPane(panel);
 		principal.pack();
 		principal.setDefaultCloseOperation(3);

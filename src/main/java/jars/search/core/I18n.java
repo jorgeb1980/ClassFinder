@@ -33,7 +33,7 @@ public enum I18n {
 	/**
 	 * Private constructor
 	 */
-	private I18n() {
+	I18n() {
 		bundles = new Hashtable<Locale, ResourceBundle>();
 		bundles.put(Locale.getDefault(), ResourceBundle.getBundle(LABELS_NAME, Locale.getDefault()));
 	}

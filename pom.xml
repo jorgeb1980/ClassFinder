@@ -4,12 +4,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>ClassFinder</groupId>
   <artifactId>ClassFinder</artifactId>
-  <version>3.20.0</version>
+  <version>3.21.0</version>
   <properties>
     <project.build.sourceEncoding>cp1252</project.build.sourceEncoding>
     <timestamp>${maven.build.timestamp}</timestamp>
    	<maven.build.timestamp.format>yyyyMMdd</maven.build.timestamp.format>
     <appversion>${project.version} - ${timestamp}</appversion>
+    <java.version>21</java.version>
   </properties>
   <build>
   	<resources>
@@ -59,8 +60,9 @@
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.1</version>
           <configuration>
-          	<source>11</source>
-          	<target>11</target>
+          	<source>${java.version}</source>
+          	<target>${java.version}</target>
+            <useIncrementalCompilation>false</useIncrementalCompilation>
           </configuration>
         </plugin>
         <!-- Full generation and upload of docs:
@@ -95,9 +97,9 @@
   </build>
   <dependencies>
   	<dependency>
-		<groupId>junit</groupId>
-		<artifactId>junit</artifactId>
-		<version>4.11</version>
+		<groupId>org.junit.jupiter</groupId>
+		<artifactId>junit-jupiter-engine</artifactId>
+		<version>5.10.1</version>
 		<scope>test</scope>
 	</dependency>
   </dependencies>

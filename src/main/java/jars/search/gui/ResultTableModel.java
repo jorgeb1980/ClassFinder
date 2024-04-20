@@ -1,21 +1,19 @@
 package jars.search.gui;
 
 
-import java.io.File;
-import java.io.IOException;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.swing.table.AbstractTableModel;
-
 import jars.search.core.I18n;
 import jars.search.core.Resource;
 import jars.search.core.SearchResult;
+
+import javax.swing.table.AbstractTableModel;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serial;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * This class implements a data model for the table presenting the search
@@ -26,9 +24,7 @@ class ResultTableModel extends AbstractTableModel {
 	//----------------------------------------------------------
 	// Class constants
 	
-	/**
-	 * Eclipse generated for serialization
-	 */
+	@Serial
 	private static final long serialVersionUID = 1636480537993041534L;
 	// Pattern for resource presentation
 	// Parameters:
@@ -50,7 +46,7 @@ class ResultTableModel extends AbstractTableModel {
 	// Class methods
 	
 	public ResultTableModel() {
-		this.model = new ArrayList<String[]>();
+		this.model = new ArrayList<>();
 	}
 
 	/**
@@ -60,15 +56,15 @@ class ResultTableModel extends AbstractTableModel {
 	public ResultTableModel(SearchResult searchResult) {
 		this();
 		if (searchResult != null) {
-			Map<File, List<Resource>> results = searchResult.getResourcesByFile();
-			List<File> files = new LinkedList<File>(results.keySet());
-			Collections.sort(files, new FileComparator());
+			var results = searchResult.getResourcesByFile();
+			var files = new LinkedList<>(results.keySet());
+			files.sort(new FileComparator());
 			// Run through the File size ordered by canonical path
-			for (File file: files) {
+			for (var file: files) {
 				// The first result of each file must show the file path in the
 				//	first column
 				boolean first = true;
-				for (Resource resource: results.get(file)) {
+				for (var resource: results.get(file)) {
 					String fileColumn = "";
 					if (first) {
 						fileColumn = file.getPath();
@@ -83,15 +79,16 @@ class ResultTableModel extends AbstractTableModel {
 	// Makes a proper html presentation of the resource name, its size and its
 	//	compressed size
 	private String presentHTML(Resource resource) {
-		String ret = "";
+		var ret = "";
 		if (resource != null) {
 			ret = MessageFormat.format(
-					HTML_RESOURCE_PATTERN, 
-					resource.getName(),					
-					resource.getSize(),
-					I18n.RESOURCES.getLabel("bytes"),
-					resource.getCompressedSize(),
-					I18n.RESOURCES.getLabel("compressed"));
+				HTML_RESOURCE_PATTERN,
+				resource.getName(),
+				resource.getSize(),
+				I18n.RESOURCES.getLabel("bytes"),
+				resource.getCompressedSize(),
+				I18n.RESOURCES.getLabel("compressed")
+			);
 		}
 		return ret;
 	}
@@ -125,7 +122,7 @@ class ResultTableModel extends AbstractTableModel {
 	 * @param column Index of the column (0 <= column < width)
 	 */
 	public String getColumnName(int column) {
-		String ret = "";
+		var ret = "";
 		if (column == 0) {
 			ret = I18n.RESOURCES.getLabel("file");
 		} else if (column == 1) {
@@ -135,7 +132,7 @@ class ResultTableModel extends AbstractTableModel {
 	}
 	
 	// File comparator
-	private class FileComparator implements Comparator<File> {
+	private static class FileComparator implements Comparator<File> {
 		// File canonical path
 		private String canonicalPath(File file) {
 			String ret = null;

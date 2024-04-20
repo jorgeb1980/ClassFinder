@@ -18,7 +18,7 @@ class DirectoryFilter extends FileFilter {
 
 	/**
 	 * Implements the filter: will accept whatever is a directory
-	 * @param f File to analyce
+	 * @param f File to analyze
 	 * @return true if the file is a directory
 	 */
 	public boolean accept(File f) {

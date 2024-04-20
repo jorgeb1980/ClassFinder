@@ -2,14 +2,14 @@ package test.files;
 
 import java.io.File;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public class BaseFileTest {
 
 File tempDir = null;
 	
-	@Before
+	@BeforeEach
 	public void createTempDir() {
 		try {
 			tempDir = FileUtils.createTempDir();
@@ -31,7 +31,7 @@ File tempDir = null;
 		}
 	}
 	
-	@After
+	@AfterEach
 	public void cleanTempDir() {
 		try {
 			if (tempDir != null && tempDir.exists() && tempDir.isDirectory()) {
