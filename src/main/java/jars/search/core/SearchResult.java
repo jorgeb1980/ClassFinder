@@ -76,7 +76,7 @@ public class SearchResult {
 	
 	/**
 	 * Results of the search for a given File that was in the reach of the search.
-	 * @param file File to search for in the search results.  If no result was found
+	 * @param f File to search for in the search results.  If no result was found
 	 * in the search, the method will return no Resources.  If the file is null,
 	 * it will neither give any result.
 	 * @return Results of the search for the specified File
@@ -92,8 +92,8 @@ public class SearchResult {
 	 * @return Results of the search
 	 */
 	public List<Resource> getResources() {
-		List<Resource> ret = new LinkedList<Resource>();
-		for (File f: results.keySet()) {
+		var ret = new LinkedList<Resource>();
+		for (var f: results.keySet()) {
 			ret.addAll(results.get(f));
 		}
 		// Sort by file path

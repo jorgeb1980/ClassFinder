@@ -1,6 +1,15 @@
 package jars.search.gui;
 
-import java.awt.Dimension;
+import jars.search.core.I18n;
+import jars.search.core.Properties;
+import jars.search.core.ResourceSearcher;
+
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -9,30 +18,6 @@ import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.swing.GroupLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
-import javax.swing.ListModel;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.table.DefaultTableModel;
-
-import jars.search.core.I18n;
-import jars.search.core.Properties;
-import jars.search.core.ResourceSearcher;
-import jars.search.core.SearchResult;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.SwingConstants;
 
 class SearchPanel extends JPanel {
 	/**
@@ -55,7 +40,7 @@ class SearchPanel extends JPanel {
 	private JScrollPane jScrollPane1;
 	private JScrollPane jScrollPane2;
 	private JSeparator jSeparator1;
-	private JList directoriesList;
+	private JList<String> directoriesList;
 	private JTable resultsTable;
 	private JTextField searchPatternText;
 
@@ -224,22 +209,19 @@ class SearchPanel extends JPanel {
 	 * @param evt Button push event
 	 */
 	void buttonSearch(ActionEvent evt) {
-		String pattern = this.searchPatternText.getText();
-		if ((pattern != null) && (pattern.trim().length() > 0)) {
-			ListModel model = this.directoriesList.getModel();
-			int listSize = model.getSize();
+		var pattern = this.searchPatternText.getText();
+		if ((pattern != null) && (!pattern.trim().isEmpty())) {
+			var model = this.directoriesList.getModel();
+			var listSize = model.getSize();
 			if (listSize > 0) {
 				List<File> directories = new LinkedList<File>();
-				for (int i = 0; i < listSize; i++) {
+				for (var i = 0; i < listSize; i++) {
 					directories.add(new File((String) model.getElementAt(i)));
 				}
-				long start = new Date().getTime();
-
+				var start = new Date().getTime();
 				try {
-					SearchResult ret = ResourceSearcher
-							.SEARCHER.search(directories,
-									pattern.trim());
-					long total = new Date().getTime() - start;
+					var ret = ResourceSearcher.SEARCHER.search(directories, pattern.trim());
+					var total = new Date().getTime() - start;
 					this.lastQueryTimeLabel.setText(Long.toString(total) + " msec.");
 					this.resultsTable.setModel(new ResultTableModel(ret));
 				}
@@ -256,11 +238,8 @@ class SearchPanel extends JPanel {
 	 * @param evt Button push event
 	 */
 	void buttonDeleteDirectory(ActionEvent evt) {
-		int index = this.directoriesList.getSelectedIndex();
-		if (index >= 0) {
-			((FileListModel) this.directoriesList.getModel())
-					.removeEntry(index);
-		}
+		var index = this.directoriesList.getSelectedIndex();
+		if (index >= 0) ((FileListModel) this.directoriesList.getModel()).removeEntry(index);
 	}
 
 	/**
@@ -270,20 +249,13 @@ class SearchPanel extends JPanel {
 	 */
 	void buttonAddDirectory(ActionEvent evt) {
 		int result = this.filesDialog.showOpenDialog(this);
-		switch (result) {
-		case 0:
-			((FileListModel) this.directoriesList.getModel())
-					.addEntry(this.filesDialog.getSelectedFile()
-							.getPath());
-
-			break;
-		}
+		if (result == 0) ((FileListModel) this.directoriesList.getModel()).addEntry(this.filesDialog.getSelectedFile().getPath());
 	}
 
 	/**
 	 * Implements an action listener for the Delete button
 	 */
-	final class DeleteListener implements ActionListener {
+	static final class DeleteListener implements ActionListener {
 		
 		//--------------------------------------------------
 		// Class properties 
@@ -346,7 +318,7 @@ class SearchPanel extends JPanel {
 	/**
 	 * Implements an action listener for the "Add directory" button
 	 */
-	final class DirectoryListener implements ActionListener {
+	static final class DirectoryListener implements ActionListener {
 
 		//----------------------------------------------
 		// Class properties

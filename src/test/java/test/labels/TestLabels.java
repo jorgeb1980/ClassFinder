@@ -1,22 +1,14 @@
 package test.labels;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+
+import jars.search.core.I18n;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
+import java.util.*;
 
-import org.junit.Test;
-
-import jars.search.core.I18n;
+import static org.junit.Assert.*;
 
 // The point of this test is to make sure no multilanguage resource is behind the
 //	others in number of resources, and to identify fast whatever is left and where 
@@ -25,44 +17,44 @@ public class TestLabels {
 	@Test
 	public void testDefault() {
 		assertEquals(I18n.RESOURCES.getLabel("query.execution.time"), 
-					 I18n.RESOURCES.getLabel(Locale.getDefault(), "query.execution.time"));		
+					 I18n.RESOURCES.getLabel(Locale.getDefault(), "query.execution.time"));
 	}
 	
 	@Test
 	public void testEnglish() {
-		assertEquals(I18n.RESOURCES.getLabel(new Locale("en"), 
-				"query.execution.time"), "Last query execution time:");		
+		assertEquals(I18n.RESOURCES.getLabel(new Locale("en"),
+				"query.execution.time"), "Last query execution time:");
 	}
 	
 	@Test
 	public void testFrench() {
 		assertEquals(I18n.RESOURCES.getLabel(new Locale("fr"), 
-				"query.execution.time"), "Temps d'exécution de la dernière recherche:");		
+				"query.execution.time"), "Temps d'exécution de la dernière recherche:");
 	}
 
 	@Test
 	public void testSpanish() {
 		assertEquals(I18n.RESOURCES.getLabel(new Locale("es"), 
-				"query.execution.time"), "Tiempo de ejecución de la última consulta:");		
+				"query.execution.time"), "Tiempo de ejecución de la última consulta:");
 	}
 	
 	@Test
 	public void testSameResources() {
 		try {
 			// Test that there is no difference between the resources in any language
-			String base = I18n.LABELS_NAME;
+			var base = I18n.LABELS_NAME;
 			// This makes the assumption that it will be ran from the sources (not from a jar)
-			ClassLoader cl = TestLabels.class.getClassLoader();
-			Enumeration<URL> resources = cl.getResources(
-					base.substring(0, base.lastIndexOf('.')).replace('.', '/'));
+			var cl = TestLabels.class.getClassLoader();
+			var resources = cl.getResources(base.substring(0, base.lastIndexOf('.')).replace('.', '/'));
 			if (resources.hasMoreElements()) {
-				URL url = resources.nextElement();
-				File i18nDir = new File(url.toURI());
-				File files[] = i18nDir.listFiles();
+				var url = resources.nextElement();
+				var i18nDir = new File(url.toURI());
+				var files = i18nDir.listFiles();
 				// Filter the properties files
-				List<File> resourceFiles = new ArrayList<File>();
-				String labelFilePrefix = base.substring(base.lastIndexOf('.') + 1);
-				for (File file: files) {
+				var resourceFiles = new ArrayList<File>();
+				var labelFilePrefix = base.substring(base.lastIndexOf('.') + 1);
+                assertNotNull(files);
+                for (var file: files) {
 					if (file.isFile() && file.getName().startsWith(labelFilePrefix)) {
 						resourceFiles.add(file);
 					}
@@ -70,11 +62,11 @@ public class TestLabels {
 				// List the files
 				System.out.println("Comparing the next resource bundle files:");
 				
-				for (File f: resourceFiles) {
+				for (var f: resourceFiles) {
 					System.out.println(f.getCanonicalPath());
 				}
 				// Compare every .properties file inside the i18n directory
-				List<String> properties = new LinkedList<String>();
+				var properties = new LinkedList<String>();
 				// The first one is the reference
 				loadProperties(resourceFiles.get(0), properties);
 				// Compare the rest
@@ -91,12 +83,10 @@ public class TestLabels {
 
 	// Compares the properties declared in the file (does something like a diff)
 	private void compareProperties(File file, List<String> properties) {
-		List<String> plus = new LinkedList<String>();
-		List<String> less = new LinkedList<String>();
-		InputStream is = null;
-		try {
-			Properties prop = new Properties();
-			is = new FileInputStream(file);
+		var plus = new LinkedList<String>();
+		var less = new LinkedList<String>();
+		try(var is = new FileInputStream(file)) {
+			var prop = new Properties();
 			prop.load(is);
 			for (Object key: prop.keySet()) {
 				if (!properties.contains(key)) {
@@ -113,18 +103,7 @@ public class TestLabels {
 			e.printStackTrace();
 			fail();
 		}
-		finally {
-			if (is != null) {
-				try {
-					is.close();
-				}
-				catch (IOException ioe) {
-					ioe.printStackTrace();
-					fail();
-				}
-			}
-		}
-		if (plus.size() > 0 || less.size() > 0) {
+		if (!plus.isEmpty() || !less.isEmpty()) {
 			fail(reportDiff(file, plus, less));
 		}
 	}
@@ -132,25 +111,25 @@ public class TestLabels {
 	// Reports the differences between the properties files
 	private String reportDiff(File file, List<String> plus, List<String> less) {
 		try {
-			StringBuilder sb = new StringBuilder();
+			var sb = new StringBuilder();
 			sb.append("Differences in ");
 			sb.append(file.getCanonicalPath());
-			sb.append(System.getProperty("line.separator"));
-			if (plus.size() > 0) {
+			sb.append(System.lineSeparator());
+			if (!plus.isEmpty()) {
 				for (String p: plus) {
 					sb.append("+ ");
 					sb.append(p);
-					sb.append(System.getProperty("line.separator"));
+					sb.append(System.lineSeparator());
 				}
 			}
-			if (less.size() > 0) {
+			if (!less.isEmpty()) {
 				for (String l: less) {
 					sb.append("- ");
 					sb.append(l);
-					sb.append(System.getProperty("line.separator"));
+					sb.append(System.lineSeparator());
 				}
 			}
-			System.err.println(sb.toString());
+			System.err.println(sb);
 			return sb.toString();
 		}
 		catch (IOException ioe) {
@@ -162,29 +141,16 @@ public class TestLabels {
 
 	// Loads the properties declared in the first file
 	private void loadProperties(File file, List<String> properties) {
-		InputStream is = null;
-		try {
-			Properties prop = new Properties();
-			is = new FileInputStream(file);
+		try(var is = new FileInputStream(file)) {
+			var prop = new Properties();
 			prop.load(is);
-			for (Object key: prop.keySet()) {
+			for (var key: prop.keySet()) {
 				properties.add((String) key);
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			fail();
-		}
-		finally {
-			if (is != null) {
-				try {
-					is.close();
-				}
-				catch (IOException ioe) {
-					ioe.printStackTrace();
-					fail();
-				}
-			}
 		}
 	}
 }

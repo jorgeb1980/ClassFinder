@@ -4,15 +4,8 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
 import java.text.MessageFormat;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.jar.JarEntry;
+import java.util.*;
 import java.util.jar.JarFile;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -29,13 +22,12 @@ public enum ResourceSearcher {
 	// Class constants
 	
 	/** Supported file types for the searcher. */
-	private static final String[] ENDINGS = { ".jar", ".zip", ".ear",
-			".war" };
+	private static final String[] ENDINGS = { ".jar", ".zip", ".ear", ".war" };
 	
 	//----------------------------------------------------------
 	// Class properties
 	
-	/** Resources caché. */
+	/** Resources cache. */
 	private Map<File, Map<File, List<Resource>>> cache = null;
 	/** File filter configured to recognize only the supported file types. */
 	private FileFilter resourceFilter = null;
@@ -44,20 +36,20 @@ public enum ResourceSearcher {
 	// Class methods
 	
 	// Private constructor - we need it to be a singleton
-	private ResourceSearcher() {
+	ResourceSearcher() {
 		resetCache();
 		this.resourceFilter = new ResourceFilter();
 	}
 
 	/** 
-	 * Cleans the directory caché.
+	 * Cleans the directory cachï¿½.
 	 */
 	public void resetCache() {
-		this.cache = new HashMap<File, Map<File, List<Resource>>>();
+		this.cache = new HashMap<>();
 	}
 	
 	/**
-	 * Resets the caché entry for a given directory.
+	 * Resets the cache entry for a given directory.
 	 * @param directory Name of the directory.
 	 */
 	public void resetCache(File directory) {
@@ -66,10 +58,10 @@ public enum ResourceSearcher {
 
 	/** 
 	 * Performs a cached search in the selected directory for the
-	 * search pattern pattern passed as a parameter.
+	 * search pattern passed as a parameter.
 	 * @param directory Directory to search into.  This parameter will
 	 * limit the scope of the search, even if there are any more directories
-	 * in the caché.  The search will be driven into any zip/jar file contained
+	 * in the cachï¿½.  The search will be driven into any zip/jar file contained
 	 * in this directory.
 	 * @param pattern Search pattern.
 	 * @return Search result, with the search pattern used and a list 
@@ -79,9 +71,8 @@ public enum ResourceSearcher {
 	 * @throws SearchException Wraps pattern validation problems, and every other
 	 * possible checked exception thrown inside.
 	 */
-	public SearchResult search(
-			File directory, String pattern) throws SearchException {
-		List<File> dirs = new LinkedList<File>();
+	public SearchResult search(File directory, String pattern) throws SearchException {
+		var dirs = new LinkedList<File>();
 		dirs.add(directory);
 		return search(dirs, pattern);
 	}
@@ -91,7 +82,7 @@ public enum ResourceSearcher {
 	 * search pattern passed as a parameter.
 	 * @param directories List of directories to search into.  This list will
 	 * limit the scope of the search, even if there are any more directories
-	 * in the caché.  The search will be driven into any zip/jar file contained
+	 * in the cache.  The search will be driven into any zip/jar file contained
 	 * in these directories.
 	 * @param pattern Search pattern.
 	 * @return Search result, with the search pattern used and a list 
@@ -101,8 +92,7 @@ public enum ResourceSearcher {
 	 * @throws SearchException Wraps pattern validation problems, and every other
 	 * possible checked exception thrown inside.
 	 */
-	public SearchResult search(
-			List<File> directories, String pattern) throws SearchException {
+	public SearchResult search(List<File> directories, String pattern) throws SearchException {
 		List<File> dirs = removeDuplicates(directories);
 		addDirectoriesToCache(dirs);
 		return searchInCache(dirs, pattern);
@@ -135,7 +125,7 @@ public enum ResourceSearcher {
 	}
 	
 	/**
-	 * Adds a list of directories to the searcher caché.
+	 * Adds a list of directories to the searcher cachï¿½.
 	 * @param directories List of directories to search into.
 	 * @throws SearchException If any I/O error happens.
 	 */
@@ -149,7 +139,7 @@ public enum ResourceSearcher {
 	}
 
 	/**
-	 * Searches for a pattern into the directories caché.
+	 * Searches for a pattern into the directories cachï¿½.
 	 * @param directory Directory to search into
 	 * @param pattern Pattern to look for
 	 * @return List of resources that answer to the pattern.  For example:<br/>
@@ -160,7 +150,7 @@ public enum ResourceSearcher {
 	private Map<File, List<Resource>> searchInDirectoryCache(
 			File directory, String pattern) throws SearchException {
 		Map<File, List<Resource>> jarFiles;
-		Map<File, List<Resource>> ret = new HashMap<File, List<Resource>>();
+		var ret = new HashMap<File, List<Resource>>();
 		Pattern regEx = null;
 		try {
 			regEx = Pattern.compile(pattern.toUpperCase());
@@ -171,16 +161,16 @@ public enum ResourceSearcher {
 		}	
 		if (this.cache.containsKey(directory)) {
 			jarFiles = this.cache.get(directory);
-			for (File jarFile: jarFiles.keySet()) {
-				List<Resource> resources = jarFiles.get(jarFile);
-				List<Resource> tmp = new LinkedList<Resource>();
-				for (Resource resource : resources) {
-					Matcher matcher = regEx.matcher(resource.getName().toUpperCase());
+			for (var jarFile: jarFiles.keySet()) {
+				var resources = jarFiles.get(jarFile);
+				var tmp = new LinkedList<Resource>();
+				for (var resource : resources) {
+					var matcher = regEx.matcher(resource.getName().toUpperCase());
 					if (matcher.find(0)) {
 						tmp.add(resource);
 					}
 				}
-				if (tmp != null && tmp.size() > 0) {
+				if (!tmp.isEmpty()) {
 					ret.put(jarFile, tmp);
 				}
 			}
@@ -189,7 +179,7 @@ public enum ResourceSearcher {
 	}
 
 	/**
-	 * Fills a map of the caché with the set of resources read from
+	 * Fills a map of the cachï¿½ with the set of resources read from
 	 * the jars/zips/etc. contained into a directory.
 	 * @param directory Directory to read from.
 	 * @return Map indexed by file name containing lists of resorce names contained in 
@@ -199,11 +189,11 @@ public enum ResourceSearcher {
 	private Map<File, List<Resource>> readFromDirectory(File directory) 
 			throws SearchException {
 		try {
-			Map<File, List<Resource>> ret = new HashMap<File, List<Resource>>();
+			var ret = new HashMap<File, List<Resource>>();
 			if (directory != null) {
 				if ((directory.exists()) && (directory.isDirectory())) {
 					File[] files = directory.listFiles(this.resourceFilter);
-					for (File file : files) {
+					for (var file : files) {
 						ret.put(file.getCanonicalFile(), getResources(file));
 					}
 				}
@@ -216,7 +206,7 @@ public enum ResourceSearcher {
 	}
 
 	/**
-	 * Makes a search into the caché looking for the pattern set in the parameter.
+	 * Makes a search into the cachï¿½ looking for the pattern set in the parameter.
 	 * @param directories List of directories to search into.
 	 * @param pattern Pattern to look into.
 	 * @return List of maps, indexed by file name and containing resource names
@@ -227,12 +217,12 @@ public enum ResourceSearcher {
 	 */
 	private SearchResult searchInCache(
 			List<File> directories, String pattern) throws SearchException {
-		Map<File, List<Resource>> tmp = new HashMap<File, List<Resource>>();
-		long initTime = new Date().getTime();
-		for (File directory : directories) {
-			Map<File, List<Resource>> resources = searchInDirectoryCache(directory, pattern);
-			if (resources != null && resources.values().size() > 0) {
-				for (File jarFile: resources.keySet()) {
+		var tmp = new HashMap<File, List<Resource>>();
+		var initTime = new Date().getTime();
+		for (var directory : directories) {
+			var resources = searchInDirectoryCache(directory, pattern);
+			if (!resources.values().isEmpty()) {
+				for (var jarFile: resources.keySet()) {
 					List<Resource> existingResources = null;
 					if (tmp.containsKey(jarFile)) {
 						existingResources = tmp.get(jarFile);
@@ -245,9 +235,8 @@ public enum ResourceSearcher {
 				}
 			}
 		}
-		long endTime = new Date().getTime();
-		SearchResult ret = SearchResult.createResult(pattern, endTime - initTime, tmp);		
-		return ret;
+		var endTime = new Date().getTime();
+		return SearchResult.createResult(pattern, endTime - initTime, tmp);
 	}
 
 	/**
@@ -258,18 +247,19 @@ public enum ResourceSearcher {
 	 */
 	private List<Resource> getResources(File file) throws SearchException {
 		try {
-			List<Resource> ret = new LinkedList<Resource>();
+			var ret = new LinkedList<Resource>();
 			if (file.exists() && file.length() > 0) {
-				JarFile jf = new JarFile(file);
-				Enumeration<JarEntry> entries = jf.entries();
+				var jf = new JarFile(file);
+				var entries = jf.entries();
 				while (entries.hasMoreElements()) {
-					JarEntry entry = (JarEntry) entries.nextElement();
+					var entry = entries.nextElement();
 					if (!entry.isDirectory()) {
-						Resource r = new Resource(
-										entry.getName(), 
-										entry.getSize(), 
-										entry.getCompressedSize(),
-										file);
+						var r = new Resource(
+							entry.getName(),
+							entry.getSize(),
+							entry.getCompressedSize(),
+							file
+						);
 						ret.add(r);
 					}
 				}
@@ -285,7 +275,7 @@ public enum ResourceSearcher {
 	/**
 	 * This class implements a file filter to be used in the directory search.
 	 */
-	private class ResourceFilter implements FileFilter {
+	private static class ResourceFilter implements FileFilter {
 		
 		// Default constructor
 		private ResourceFilter() {}
@@ -295,13 +285,12 @@ public enum ResourceSearcher {
 		 * file endings supported by the class <code>ENDINGS</code> constant.
 		 */
 		public boolean accept(File pathname) {
-			String fileName = pathname.getName();
-			boolean accept = false;
-			int i = 0;
-			int length = ResourceSearcher.ENDINGS.length;
+			var fileName = pathname.getName();
+			var accept = false;
+			var i = 0;
+			var length = ResourceSearcher.ENDINGS.length;
 			while ((!accept) && (i < length)) {
-				accept = fileName
-						.endsWith(ResourceSearcher.ENDINGS[(i++)]);
+				accept = fileName.endsWith(ResourceSearcher.ENDINGS[(i++)]);
 			}
 			return accept;
 		}

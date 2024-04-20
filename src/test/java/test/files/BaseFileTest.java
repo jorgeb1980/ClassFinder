@@ -1,9 +1,9 @@
 package test.files;
 
-import java.io.File;
-
 import org.junit.After;
 import org.junit.Before;
+
+import java.io.File;
 
 public class BaseFileTest {
 
