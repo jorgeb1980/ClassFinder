@@ -1,8 +1,9 @@
 package test.files;
 
 import static java.nio.charset.Charset.forName;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static test.files.FileUtils.addToContainer;
 import static test.files.FileUtils.createContainer;
 
@@ -12,8 +13,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import jars.search.core.ResourceSearcher;
 import jars.search.core.SearchResult;
@@ -81,7 +81,7 @@ public class TestJars extends BaseFileTest {
 		}
 		catch(Exception t) {
 			t.printStackTrace();
-			Assert.fail();
+			fail();
 		}
 	}
 	
@@ -131,7 +131,7 @@ public class TestJars extends BaseFileTest {
 		}
 		catch(Exception t) {
 			t.printStackTrace();
-			Assert.fail();
+			fail();
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class TestJars extends BaseFileTest {
 		}
 		catch(Exception t) {
 			t.printStackTrace();
-			Assert.fail();
+			fail();
 		}
 	}
 }
