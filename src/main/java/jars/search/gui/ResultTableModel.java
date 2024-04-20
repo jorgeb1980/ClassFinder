@@ -79,7 +79,7 @@ class ResultTableModel extends AbstractTableModel {
 	// Makes a proper html presentation of the resource name, its size and its
 	//	compressed size
 	private String presentHTML(Resource resource) {
-		String ret = "";
+		var ret = "";
 		if (resource != null) {
 			ret = MessageFormat.format(
 				HTML_RESOURCE_PATTERN,

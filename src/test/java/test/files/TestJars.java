@@ -32,14 +32,9 @@ public class TestJars extends BaseFileTest {
 			for (var container: results.getResourcesByFile().keySet()) {
 				System.out.println(container.getCanonicalPath());
 				for (var res: results.getResourcesByFile().get(container)) {
-					System.out.println(
-						"\t"
-						+ res.getName() 
-						+ " - " 
-						+ res.getSize() 
-						+ " bytes (" 
-						+ res.getCompressedSize() 
-						+ " compressed)"
+					System.out.printf(
+						"\t%s - %d bytes (%d compressed)\n",
+						res.getName(), res.getSize(), res.getCompressedSize()
 					);
 				}
 			}

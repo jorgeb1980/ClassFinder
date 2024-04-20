@@ -15,14 +15,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.Serial;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
 class SearchPanel extends JPanel {
-	/**
-	 * Eclipse generated for serialization
-	 */
+	@Serial
 	private static final long serialVersionUID = -6396120998133277126L;
 	private JFileChooser filesDialog = null;
 	private FileFilter directoriesFilter = null;
@@ -60,7 +59,7 @@ class SearchPanel extends JPanel {
 		this.lastQueryTimeLabel = new JLabel();
 		this.jLabel2 = new JLabel();
 		this.jScrollPane1 = new JScrollPane();
-		this.directoriesList = new JList();
+		this.directoriesList = new JList<String>();
 		this.jButton1 = new JButton();
 		this.jLabel3 = new JLabel();
 		this.jSeparator1 = new JSeparator();
